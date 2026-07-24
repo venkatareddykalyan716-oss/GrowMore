@@ -3272,7 +3272,7 @@ function App() {
           padding: 0;
           width: 100%;
           overflow-x: hidden !important;
-          background-color: #fcfdfa;
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #e0f2fe 100%) fixed;
           -webkit-text-size-adjust: 100%;
           touch-action: manipulation;
         }
@@ -3288,12 +3288,14 @@ function App() {
         }
 
         .auth-card {
-          background: white;
-          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          border-radius: 24px;
           padding: 35px 28px;
           width: 100%;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+          box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15);
           box-sizing: border-box;
+          border-top: 4px solid #16a34a;
           transition: all 0.3s ease;
         }
 
