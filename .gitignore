@@ -1,0 +1,10 @@
+node_modules/
+.agents/
+.gemini/
+build/
+dist/
+.env
+*.log
+git_output.txt
+.DS_Store
+Thumbs.db

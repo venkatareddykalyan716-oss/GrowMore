@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <defs>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#84cc16;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#65a30d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22c55e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14532d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#166534;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafShine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#bef264;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#84cc16;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle (G shape) -->
+  <circle cx="200" cy="130" r="80" fill="none" stroke="url(#gGradient)" stroke-width="14"/>
+  
+  <!-- G cutout (creates the G opening) -->
+  <path d="M 280 130 L 280 165 L 230 165" fill="none" stroke="url(#gGradient)" stroke-width="14" stroke-linecap="round"/>
+  
+  <!-- Stem of the plant inside G -->
+  <path d="M 200 210 Q 200 180 200 150" fill="none" stroke="#14532d" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Big leaf on right -->
+  <path d="M 200 140 Q 230 80 290 60 Q 280 130 200 140 Z" fill="url(#leafGradient)"/>
+  <path d="M 200 140 Q 230 110 275 75" fill="none" stroke="#14532d" stroke-width="2" opacity="0.6"/>
+  <path d="M 200 140 Q 240 100 280 80" fill="none" stroke="#14532d" stroke-width="1.5" opacity="0.4"/>
+  
+  <!-- Small leaf on left -->
+  <path d="M 200 160 Q 170 130 130 120 Q 145 160 200 160 Z" fill="url(#leafGradient)"/>
+  <path d="M 200 160 Q 175 145 140 130" fill="none" stroke="#14532d" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Shine on big leaf -->
+  <path d="M 215 130 Q 240 90 285 70 Q 275 110 215 130 Z" fill="url(#leafShine)" opacity="0.5"/>
+  
+  <!-- "GrowMore" Text -->
+  <text x="200" y="270" font-family="'Poppins', Arial, sans-serif" font-size="48" font-weight="700" text-anchor="middle">
+    <tspan fill="url(#gGradient)">Grow</tspan><tspan fill="url(#leafGradient)">More</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <line x1="60" y1="295" x2="120" y2="295" stroke="#22c55e" stroke-width="2"/>
+  <text x="200" y="302" font-family="'Poppins', Arial, sans-serif" font-size="14" font-weight="500" fill="#15803d" text-anchor="middle" letter-spacing="2">GROW TODAY, GREATER TOMORROW</text>
+  <line x1="280" y1="295" x2="340" y2="295" stroke="#22c55e" stroke-width="2"/>
+</svg>

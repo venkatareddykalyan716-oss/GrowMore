@@ -1,0 +1,176 @@
+STDOUT:
+Starting search...
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\.env:7: RAZORPAY_KEY_ID=rzp_test_TAElGEtoB0WnGc
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\.env:8: RAZORPAY_KEY_SECRET=A3sYwaq4S6MFiHw7AbGXv0dc
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:764: const utcNow = now.getTime() + (now.getTimezoneOffset() * 60000);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:853: // 💳 RAZORPAY INTEGRATION
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:881: body: { error: { description: 'Invalid JSON response from Razorpay' } }
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:896: const createRazorpayOrder = async (req, res) => {
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:903: const keyId = process.env.RAZORPAY_KEY_ID;
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:904: const keySecret = process.env.RAZORPAY_KEY_SECRET;
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:907: return res.status(500).json({ success: false, message: 'Razorpay keys not configured on server' });
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:924: const result = await makeHttpsPost('https://api.razorpay.com/v1/orders', headers, body);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:935: console.error('Razorpay Order API Error:', result.body);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:938: message: result.body?.error?.description || 'Failed to create order with Razorpay'
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:942: console.error('createRazorpayOrder error:', error);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:947: const verifyRazorpayPayment = async (req, res) => {
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:949: const { razorpay_order_id, razorpay_payment_id, razorpay_signature, amount } = req.body;
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:950: const keySecret = process.env.RAZORPAY_KEY_SECRET;
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:953: return res.status(500).json({ success: false, message: 'Razorpay secret not configured' });
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:958: .update(razorpay_order_id + '|' + razorpay_payment_id)
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:961: if (generatedSignature !== razorpay_signature) {
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:976: description: `Recharge via Razorpay (${razorpay_payment_id})`,
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:978: reference: razorpay_payment_id
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:991: console.error('verifyRazorpayPayment error:', error);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:1013: createRazorpayOrder,
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\authController.js:1014: verifyRazorpayPayment
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\planController.js:128: const utcNow = now.getTime() + (now.getTimezoneOffset() * 60000);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\controllers\planController.js:133: const utcClaimed = claimed.getTime() + (claimed.getTimezoneOffset() * 60000);
+Found "salt" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\models\Admin.js:31: const salt = await bcrypt.genSalt(12);
+Found "salt" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\models\Admin.js:32: this.password = await bcrypt.hash(this.password, salt);
+Found "salt" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\models\User.js:122: const salt = await bcrypt.genSalt(12);
+Found "salt" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\models\User.js:123: this.password = await bcrypt.hash(this.password, salt);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:77: "integrity": "sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:209: "integrity": "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:353: "integrity": "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:494: "integrity": "sha512-7iN8iPMDzOMHPUYllBEsQdWVB6fPDMPqwjBaFrgr4Jgr/+okjvzAy+UHlYYL/Vs0OsOrMkwS6PJDkFlJwoxUnw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:553: "integrity": "sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:632: "integrity": "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:720: "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:867: "integrity": "sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:891: "integrity": "sha512-QYqzpfwO3/CWf3XP+Z+tkQsfaLL/EnUlXWVkIk5FUPc4sBdTehEqZONuyRt2P67PXAk+NXmTBcc97zw9t1FQrw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:933: "integrity": "sha512-ZS4Bp4r/Zoeq6+NLJpP+0Zzm0pR8whtGPf1XExKLJBAczGMnSi3It14OiNCStjQjM6NU1okjQGSxgEZN8eBYKg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:1401: "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:1419: "integrity": "sha512-VMbMxbDeehAxpOtWJXlcUS5E8iXh6QmN+BkRX1GARS3wRaXEEgzCcB10gTQazO42tpNIya8xIyNx8fll1OFPrg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\package-lock.json:1705: "integrity": "sha512-TQ5pAGhd5whStmqWvYF4OjQROlmv9SMFVt37qoCBdqRffuuklWYQlCNnEs2ZaIBD1kZRNnikiZOS1eqgkar0iw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\routes\auth.js:17: createRazorpayOrder,
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\routes\auth.js:18: verifyRazorpayPayment
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\routes\auth.js:59: // Razorpay Payment Gateway Routes
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\routes\auth.js:60: router.post('/razorpay/create-order', protect, createRazorpayOrder);
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\routes\auth.js:61: router.post('/razorpay/verify-payment', protect, verifyRazorpayPayment);
+Found "salt" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\search_code.js:4: const keywords = ['salt', 'payu', 'easebuzz', 'jwpay', 'zo', 'tompay'];
+Found "payu" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\search_code.js:4: const keywords = ['salt', 'payu', 'easebuzz', 'jwpay', 'zo', 'tompay'];
+Found "easebuzz" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\search_code.js:4: const keywords = ['salt', 'payu', 'easebuzz', 'jwpay', 'zo', 'tompay'];
+Found "jwpay" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\search_code.js:4: const keywords = ['salt', 'payu', 'easebuzz', 'jwpay', 'zo', 'tompay'];
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\search_code.js:4: const keywords = ['salt', 'payu', 'easebuzz', 'jwpay', 'zo', 'tompay'];
+Found "tompay" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\backend\search_code.js:4: const keywords = ['salt', 'payu', 'easebuzz', 'jwpay', 'zo', 'tompay'];
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:309: "integrity": "sha512-+kmGVjcT9RGYzoDwdwEqEvGgKe3BYq+O1iGzjFubaNgZHwYHP6lsF2Yghf4kEuv9BV7tYDZ913aBW9am6YKong==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:330: "integrity": "sha512-16AMiW26DbXWBbr3B8wNozKM0ydMLB892vaOaJW/fPJdnT8vJk5sdkQcU/isqUxyCE0cEoa8wZOcbgDuC4b6Og==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:418: "integrity": "sha512-1k2lAGRMfHTcwuNYcCNUmaUffmQv8KWMfh2iJUUeRlwlwH4FdNG7mfPI10NPfLHJFThE4Tyr4mv7kTNZOiPuBg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:492: "integrity": "sha512-oBNVCvnO5tND+xSopWvV8WNGfpTfgP4Zr/YXXSj8zfmcPktp5Ku/aZlsIowgSD4fjmgHn6sGmB9APVsU5zOdhA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:627: "integrity": "sha512-nutsvktDItsNn4rpGItSNV2sz1XwS+nfU0Rg8aCx3W3NOKVzdMjJRu0O5OkgDp3ZGICSTbgRpxZoWsxoKRvbeA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:806: "integrity": "sha512-d8waShlpFDinQ5MtvGU9xDAOzKH47+FFoney2baFIoMr952hKOLp1HR7VszoZvOsV/4+RRszNY7D17ba0te0ig==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:1018: "integrity": "sha512-GtcpjFvanPfzNQi3eTitsCqtRRmmqzpy/A+yhTR1HaZo1Ly3EA8ZXxlPyHdR8/IuRMYc3E4wdGBewB2QKQjAaA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:1385: "integrity": "sha512-vuFoLwr4qnv2xbZ16SQd6uPcH5FNrLHhk/Jzo++0XJFcaDsr4gjJVg6j398oMHiC+83k/GiBzviwF5KBJkPUtQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:1819: "integrity": "sha512-jK52h8LaLc7JarhQV2ofeFMts4H7vnOXnqZNA6fYglBTZewRBE51KWt3BUltW1P+KoPsYkHoJeXePuz4zo2LMw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:1853: "integrity": "sha512-OgZ+zoAJgZLUCunsTRQ5LAjOywDv5zzZ2/hQ5aMw1pGXyY2rtE8/chXYUmu3AlVHKpm10KEdG9aMwbI/K76ZGw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2089: "integrity": "sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2154: "integrity": "sha512-ZgrlzuUAjXIOc2JueK0X5sZDjCtgimVp/O5CEqTcs5ShWBa6smhWYbS0x5cVc/+rycTDbjjzoP0KTDnUneZGOg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2251: "integrity": "sha512-jcOanIbv55OFKQ3sYeFD/T0Ti7AMXc9nM1hZWu8m/2722gOTxFg7xYu4RDLJLeZmPUVQlGzo4jhzvTUq3x4ZUw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2324: "integrity": "sha512-c1XwKJ2eMIWrzQenN0XbcfzckOLLJiczqy+YvfGmzoVXd7pT9FfObiSEfzs84bpE/VqfpEuAZ9tCRbZkZxxbdw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2725: "integrity": "sha512-y9NIHUYF3PJRlHk98NdC/N1gl88BL08aQQgu4k4ZopQkCw9t9cV8mtl3TV8b/YCB8XaVTFrmUTAJvjsntDireg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2778: "integrity": "sha512-ipON6WtYgl/1329g5AIJVbUuEh0wZVbdpGwC99Jw4LwuoBNS95MVphU6zOeD9pDkon+LLbFL7lOQRapbB8SCHw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2804: "integrity": "sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:2918: "integrity": "sha512-39nnKffWz8xN1BU/2c79n9nB9HDzo0niYUqx6xyqUnyoAnQyyWpOTdZEeiCch8BBu515t4wp9ZmgVfVhn9EBpw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:3198: "integrity": "sha512-zSOZH8PdZOpuG1ZVx/cLVePB2ibo3WPpqo7gFIjLV9a0QsuQAzJiwwqmuEdTaW2pegyBE17Uu15mOgOcgabQZg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:3732: "integrity": "sha512-TiZzBSJja/LbhNPvk6yc0JrX9XqhQ0hdh6M2svYfsHGejaKFIAGd9MQ+ERIMzLGlN/kZoYIgdxFV0PuljTKXag==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:3785: "integrity": "sha512-VlJEV0fOQ7BExOsHYAGrgbEiZoi8D+Bl2+f6V2RrXerRSylnp+ZBHmPvaIa8cz0Ajx7WO7Z5RqfgYg7ED1nRhA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:3935: "integrity": "sha512-39nnKffWz8xN1BU/2c79n9nB9HDzo0niYUqx6xyqUnyoAnQyyWpOTdZEeiCch8BBu515t4wp9ZmgVfVhn9EBpw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:3989: "integrity": "sha512-jyH7wtcHiKssDtFPRB+iQdxlDf96m0E39yb0k5uJVhFGleZFoNw1c4aeIcVUPPbXUVJ94wwnMOAqUHyzoEPVMA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4048: "integrity": "sha512-RNJUIQH/J8iA/1NzlE4N7KtyZNHi3w7at7hDjvRNm5rcUXa00z1vRz3glZoULfJ5mpvYhLybmVcwcjGrC1pRrQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4077: "integrity": "sha512-PTcKLUNvBqnY2U6E5bdOQcSM+oVP/PmrDY9NzowJjislEjwP/C4an2303MCVS2Mg9d3AJpIGdUFIQQWbPds0Sw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4218: "integrity": "sha512-4B/qKCfeE/ODUaAUpSwfzazo5x29WD4r3vXiWsB7I2mSDAihwEqKO+g8GELZUQSSAo5e1XTYh3ZVfLyxBc12nA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4397: "integrity": "sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4456: "integrity": "sha512-FmeCCAenzH0KH381SPT5FZmiA/TmpndpcaShhfgEN9eCVjnFBqq3l1xrI42y8+PPLI6hypzou4GXw00WHmPBLQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4507: "integrity": "sha512-F/TKATkzseUExPlfvmwQKGITM3DGTK+vkAsCZoDc5daVygbJBnjEUCbgkAvVFsgfXfX4YIqZ/27G3k3tdXrTxQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:4805: "integrity": "sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5000: "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5100: "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5128: "integrity": "sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5222: "integrity": "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5330: "integrity": "sha512-hG1bReV+OUU+MOqK4t/ZWI0tZOyz3rqS9XuhOUz1cIcbwBKjOyJEJuw9ER5JuNyqxNk8u/JUVbGibBOL1yrjFw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5414: "integrity": "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5547: "integrity": "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:5628: "integrity": "sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:6348: "integrity": "sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:6365: "integrity": "sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:6481: "integrity": "sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:6499: "integrity": "sha512-l4gcSouhcgIKRvyy99RNVOgxXiicE+2jZoNmaNmZ6JXiGajBOJAesk1OBlJuM5k2c+eudGdLxDqXuPCKIj6kpw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:6532: "integrity": "sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:6580: "integrity": "sha512-GrwoxYN+uWlzO8uhUXRl0P+kHE4GtVPfYzVLcUxPL7KNdHKj66vvlhiweIHqYYXWlw+T8iLMp42Lm67ghw4WMQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:7188: "integrity": "sha512-whOE1HFo/qJDyX4SnXzP4N6zOWn79WhnCUY/iDR0mPfQZO8wcYE4JClzI2oZrhBnnMUCBCHZhO6VQyoBU95mZA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:7680: "integrity": "sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:7809: "integrity": "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:7821: "integrity": "sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8153: "integrity": "sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8211: "integrity": "sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8242: "integrity": "sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8314: "integrity": "sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8332: "integrity": "sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8616: "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:8721: "integrity": "sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:9146: "integrity": "sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:9226: "integrity": "sha512-evOr8xfXKxE6qSR0hSXL2r3sd7ALj8+7jQEUvPYcm5sgZFdJ+AYzT6yNmJenvIYQBgIGwfwz08sL8zoL7yq2BA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:9576: "integrity": "sha512-p3EcsicXjit7SaskXHs1hA91QxgTw46Fv6EFKKGS5DRFLD8yKnohjF3hxoju94b/OcMZoQukzpPpBE9uLVKzgQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:10271: "integrity": "sha512-jZCyo6iIxO1aqUxpuBlwTDMkzOAJS4a3eYz3YzgxxVQFwLeSA7Jfq5cbqCY+JLvTDrWirgusI/0KwxKMgrdf7w==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:10372: "integrity": "sha512-QPAkP5EwKdK/bxIr6C1I4Vs0rm2nHiANzj/Z5X2JQkrZo6IqvC4ldZ9K95tF0HdidhA8Bo6egxSzUFPYKcEXLw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:10665: "integrity": "sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:10808: "integrity": "sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:10876: "integrity": "sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:11031: "integrity": "sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:11043: "integrity": "sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:11097: "integrity": "sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:11551: "integrity": "sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:11741: "integrity": "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:11978: "integrity": "sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:12159: "integrity": "sha512-SmWMSJmB8MRnnULldx0lQIyhSNvuDl9HfrZkaqqE/WHAhToYsAvDq+yAsA/kIyINDszOp3Rh0GFoNuH5Ypsm3Q==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:12262: "integrity": "sha512-82pC1xkJZtcJEfiLw6UXnXVXScgtBrjlO5CBmuDQc+dlb88ZYheFsjTn40+zBVi3DkfF7iezO0nJUPLcJK3pvA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:12613: "integrity": "sha512-RHXxplCeLh9VjinvMrZONq7im4wjWGlRJAqmAVLXyZaXwfDWP73/oq4NdIp+OZwhQUMj0zjqDfM5Fj7qby+B4g==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:12970: "integrity": "sha512-qnCL5jzkNUmKVhZoENp1mJiGNPcsJCs1aaRmURmeJGES23Z/ajaln+EPTD+rBeNkSryI+2WTdW+lwcVdOikrpA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13002: "integrity": "sha512-83ZJ4t3NUDETIHTa3uEg6asWjSBYL5EdkVB0sDncx9ERzOKBVJIUeDO9RyA9Zwtig8El1d79HBp0JEi8wvGQnA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13322: "integrity": "sha512-TyzE4NVGLUFy+H/Uy4N6c3G0HEeprsVfge6Lmq+0FdQQ/zqoVYB62IsBZORsiL+o96s6ff/V6/3UQo/C0cgCAA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13364: "integrity": "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13460: "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13497: "integrity": "sha512-JZd3gMVBAVQkSs6HdNZo9Sdo0LNcQeMNP3CozBJb3JYC/QUYZTnKxP+f8oWRX4rHP5EurWxqAHTSwUCjlNKa1w==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13613: "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:13825: "integrity": "sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:14030: "integrity": "sha512-0ghuzq67LI9bLXpOX/ISfve/Mq33a4aFRzoQYhnnok1JOFpmE/A2TBGkNVenOGEeSBCjIiWcc6MVOG5HEQv0sA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:14087: "integrity": "sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:14181: "integrity": "sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:14412: "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:14573: "integrity": "sha512-VMbMxbDeehAxpOtWJXlcUS5E8iXh6QmN+BkRX1GARS3wRaXEEgzCcB10gTQazO42tpNIya8xIyNx8fll1OFPrg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:14941: "integrity": "sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:15157: "integrity": "sha512-0u/TldDbKD8bFCQ/4f5+mNRrXwZ8hg2w7ZR8wa16e8z9XpePWl3eGEcUD0OXpEH/VJH/2G3gjUtR3ZOiBe2S/w==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:15389: "integrity": "sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:15449: "integrity": "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:15736: "integrity": "sha512-201R5j+sJpK8nFWwKVyNfZot8FaJbLZDq5evriVzbV1wDtSXDjRUDRfJzHpAaxFDMEhsZL1QkeqM61wgsS3KaQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16164: "integrity": "sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16403: "integrity": "sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16440: "integrity": "sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16687: "integrity": "sha512-39nnKffWz8xN1BU/2c79n9nB9HDzo0niYUqx6xyqUnyoAnQyyWpOTdZEeiCch8BBu515t4wp9ZmgVfVhn9EBpw==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16738: "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16810: "integrity": "sha512-6iBczoX+kDQ7a3+YJBnh3T+KZRxM/iYNPXicqk66/Qfm1b93iu+yOImkg0zHbj5LNOcNv1TEADiZ0xa34B4q6Q==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16895: "integrity": "sha512-nm+v6QmrIFaB/yokJmQ/93qIJ7n72NICxIwQwe5xsZiV2aI93MGGyEyzOzDPVz5THEr5rC3FJSsO3346cId64Q==",
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\package-lock.json:16984: "integrity": "sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==",
+Found "jwpay" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:12: const [channel, setChannel] = useState('P-Jwpay');
+Found "jwpay" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:20: const channels = ['P-Jwpay', 'P-Zo', 'P-Paytm Only', 'P-TomPay'];
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:20: const channels = ['P-Jwpay', 'P-Zo', 'P-Paytm Only', 'P-TomPay'];
+Found "tompay" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:20: const channels = ['P-Jwpay', 'P-Zo', 'P-Paytm Only', 'P-TomPay'];
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:65: const orderRes = await axios.post(`${API_URL}/auth/razorpay/create-order`, {
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:77: // 2. Load Razorpay Checkout Script
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:78: const scriptLoaded = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:80: throw new Error('Razorpay SDK failed to load. Please check your network connection.');
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:83: // 3. Open Razorpay Checkout Dialog
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:95: const verifyRes = await axios.post(`${API_URL}/auth/razorpay/verify-payment`, {
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:96: razorpay_order_id: response.razorpay_order_id,
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:97: razorpay_payment_id: response.razorpay_payment_id,
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:98: razorpay_signature: response.razorpay_signature,
+Found "zo" in c:\Users\KALYAN VENKATA REDDY\OneDrive\Desktop\GrowMore\frontend\src\components\Recharge.js:132: const rzp = new window.Razorpay(options);
+Search finished.
+
+
+STDERR:
+
+
+ERROR:
+null
