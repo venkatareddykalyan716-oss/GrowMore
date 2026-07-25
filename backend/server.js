@@ -53,15 +53,17 @@ app.use(helmet({
   contentSecurityPolicy: false
 }));
 
+app.set('trust proxy', 1);
+
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'http://localhost:3001',  // ✅ Add this for your setup
+    'http://localhost:3001',
     'http://localhost:3002',
+    'https://growmore4.netlify.app'
   ],
   credentials: true
 }));
-
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
@@ -121,13 +123,13 @@ const socketIo = require('socket.io');
 
 const PORT = process.env.PORT || 5005; // Use 5005 as hotfixed earlier
 const server = http.createServer(app);
-
 const io = socketIo(server, {
   cors: {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'http://localhost:3002'
+      'http://localhost:3002',
+      'https://growmore4.netlify.app'
     ],
     credentials: true
   }
