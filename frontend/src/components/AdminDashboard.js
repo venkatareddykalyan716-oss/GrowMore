@@ -246,6 +246,136 @@ const PromotionRewardsPanel = ({ darkMode, rewards = [] }) => {
   );
 };
 
+const ReferCodesPanel = ({ darkMode, users = [] }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [copiedIndex, setCopiedIndex] = useState(null);
+  const [copiedLinkIndex, setCopiedLinkIndex] = useState(null);
+
+  const filteredUsers = users.filter(u => {
+    const q = searchQuery.toLowerCase();
+    return (
+      (u.fullName && u.fullName.toLowerCase().includes(q)) ||
+      (u.phone && u.phone.includes(q)) ||
+      (u.referralCode && u.referralCode.toLowerCase().includes(q))
+    );
+  });
+
+  const handleCopyCode = (code, idx) => {
+    navigator.clipboard.writeText(code);
+    setCopiedIndex(idx);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  const handleCopyLink = (code, idx) => {
+    const inviteLink = `${window.location.origin}/register?inviteCode=${code}`;
+    navigator.clipboard.writeText(inviteLink);
+    setCopiedLinkIndex(idx);
+    setTimeout(() => setCopiedLinkIndex(null), 2000);
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 6px 0' }}>User Referral Codes</h2>
+        <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Quick lookup panel to view and copy referral codes and invitation links for all registered members.</p>
+      </div>
+
+      <div style={{ background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, borderRadius: '24px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
+        <div style={{ position: 'relative', width: '320px', marginBottom: '20px' }}>
+          <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
+          <input 
+            type="text" 
+            placeholder="Search by name, phone, or code..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%',
+              background: darkMode ? '#0f172a' : '#f1f5f9',
+              border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`,
+              borderRadius: '12px',
+              padding: '10px 14px 10px 42px',
+              color: 'inherit',
+              fontSize: '13px',
+              outline: 'none',
+              fontFamily: 'inherit'
+            }}
+          />
+        </div>
+
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+            <thead>
+              <tr style={{ borderBottom: `2px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Member Name</th>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Phone Number</th>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Referral Code</th>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700, textAlign: 'center' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.length === 0 ? (
+                <tr>
+                  <td colSpan="4" style={{ padding: '40px 20px', textAlign: 'center', color: '#94a3b8' }}>
+                    No members found.
+                  </td>
+                </tr>
+              ) : (
+                filteredUsers.map((u, idx) => (
+                  <tr key={u._id} style={{ borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
+                    <td style={{ padding: '16px 20px' }}>
+                      <strong style={{ fontSize: '13px' }}>{u.fullName || 'Member'}</strong>
+                    </td>
+                    <td style={{ padding: '16px 20px', fontSize: '13px' }}>{u.phone}</td>
+                    <td style={{ padding: '16px 20px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: 800, color: '#16a34a', letterSpacing: '1px' }}>{u.referralCode || '—'}</span>
+                    </td>
+                    <td style={{ padding: '16px 20px', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <button 
+                          onClick={() => handleCopyCode(u.referralCode, idx)}
+                          style={{
+                            padding: '6px 12px',
+                            background: copiedIndex === idx ? '#16a34a' : 'rgba(22, 163, 74, 0.1)',
+                            color: copiedIndex === idx ? 'white' : '#16a34a',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          {copiedIndex === idx ? 'Copied! ✓' : 'Copy Code'}
+                        </button>
+                        <button 
+                          onClick={() => handleCopyLink(u.referralCode, idx)}
+                          style={{
+                            padding: '6px 12px',
+                            background: copiedLinkIndex === idx ? '#3b82f6' : 'rgba(59, 130, 246, 0.1)',
+                            color: copiedLinkIndex === idx ? 'white' : '#3b82f6',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          {copiedLinkIndex === idx ? 'Copied! ✓' : 'Copy Link'}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Referral Settings and Adjustments Component for Admin Panel
 const ReferralConfigPanel = ({ darkMode, users }) => {
   const [enabled, setEnabled] = useState(true);
@@ -1228,7 +1358,8 @@ const AdminDashboard = () => {
     { id: 'withdrawals', label: 'Withdrawals', emoji: '💸' },
     { id: 'referral', label: 'Referral', emoji: '🤝' },
     { id: 'giftcodes', label: 'Gift Codes', emoji: '🎁' },
-    { id: 'promotion_rewards', label: 'Promotion Rewards', emoji: '🏆' }
+    { id: 'promotion_rewards', label: 'Promotion Rewards', emoji: '🏆' },
+    { id: 'refer_codes', label: 'Refer Codes', emoji: '🔗' }
   ];
 
   // Features list for Feature Grid
@@ -2903,10 +3034,15 @@ const AdminDashboard = () => {
             <PromotionRewardsPanel darkMode={darkMode} rewards={promotionRewards} />
           )}
 
+          {/* ─── View 9: Referral Codes Lookup ─── */}
+          {activeTab === 'refer_codes' && (
+            <ReferCodesPanel darkMode={darkMode} users={users} />
+          )}
+
           {/* Fallback for other sidebar items */}
-          {!['dashboard', 'users', 'deposits', 'withdrawals', 'giftcodes', 'plans', 'investments', 'referral', 'promotion_rewards'].includes(activeTab) && (
+          {!['dashboard', 'users', 'deposits', 'withdrawals', 'giftcodes', 'plans', 'investments', 'referral', 'promotion_rewards', 'refer_codes'].includes(activeTab) && (
             <div style={{ padding: '80px 20px', textAlign: 'center', background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', borderRadius: '24px', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}` }}>
-              <span style={{ fontSize: '60px', display: 'block', marginBottom: '18px' }}>⚙️</span>
+               <span style={{ fontSize: '60px', display: 'block', marginBottom: '18px' }}>⚙️</span>
               <h3 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 10px 0' }}>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Sub-Panel</h3>
               <p style={{ color: '#94a3b8', fontSize: '14px', maxWidth: '420px', margin: '0 auto', lineHeight: 1.6 }}>
                 You have requested the configured <strong>{activeTab}</strong> settings view. This panel features full mockup data for deployment validation.
