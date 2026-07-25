@@ -17,7 +17,7 @@ const { generateCaptcha } = require('../utils/captcha');
 // ============================
 const generateToken = (id, phone, role) => {
   return jwt.sign({ id, phone, role }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE
+    expiresIn: process.env.JWT_EXPIRE  || "7d"
   });
 };
 
