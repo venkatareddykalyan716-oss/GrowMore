@@ -251,12 +251,93 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [copiedLinkIndex, setCopiedLinkIndex] = useState(null);
 
-  // Customize Modal States
+  // Global Referral Codes States
+  const [globalCodes, setGlobalCodes] = useState([]);
+  const [globalLoading, setGlobalLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState('');
   const [customCode, setCustomCode] = useState('');
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  const loadGlobalCodes = async () => {
+    setGlobalLoading(true);
+    try {
+      const token = localStorage.getItem('gm_token');
+      const res = await axios.get(`${API_URL}/admin/referral/global`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data.success) {
+        setGlobalCodes(res.data.codes || []);
+      }
+    } catch (err) {
+      console.error('Failed to load global codes:', err);
+    } finally {
+      setGlobalLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadGlobalCodes();
+  }, []);
+
+  const handleCopyCode = (code, type, idx) => {
+    navigator.clipboard.writeText(code);
+    setCopiedIndex(`${type}-${idx}`);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  const handleCopyLink = (code, type, idx) => {
+    const inviteLink = `${window.location.origin}/register?inviteCode=${code}`;
+    navigator.clipboard.writeText(inviteLink);
+    setCopiedLinkIndex(`${type}-${idx}`);
+    setTimeout(() => setCopiedLinkIndex(null), 2000);
+  };
+
+  const generateRandomCode = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let rand = '';
+    for (let i = 0; i < 5; i++) {
+      rand += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setCustomCode(`GM${rand}`);
+  };
+
+  const handleCreateGlobalCode = async (e) => {
+    e.preventDefault();
+    if (!customCode.trim()) return;
+    setSaving(true);
+    setErrorMsg('');
+    try {
+      const token = localStorage.getItem('gm_token');
+      const res = await axios.post(`${API_URL}/admin/referral/global/create`, {
+        code: customCode.toUpperCase().trim()
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data.success) {
+        setShowModal(false);
+        setCustomCode('');
+        loadGlobalCodes();
+      }
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || 'Failed to create global referral code');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDeleteGlobalCode = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this global referral code?')) return;
+    try {
+      const token = localStorage.getItem('gm_token');
+      await axios.delete(`${API_URL}/admin/referral/global/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      loadGlobalCodes();
+    } catch (err) {
+      alert('Failed to delete global code');
+    }
+  };
 
   const filteredUsers = users.filter(u => {
     const q = searchQuery.toLowerCase();
@@ -267,51 +348,17 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
     );
   });
 
-  const handleCopyCode = (code, idx) => {
-    navigator.clipboard.writeText(code);
-    setCopiedIndex(idx);
-    setTimeout(() => setCopiedIndex(null), 2000);
-  };
-
-  const handleCopyLink = (code, idx) => {
-    const inviteLink = `${window.location.origin}/register?inviteCode=${code}`;
-    navigator.clipboard.writeText(inviteLink);
-    setCopiedLinkIndex(idx);
-    setTimeout(() => setCopiedLinkIndex(null), 2000);
-  };
-
-  const handleCreateCustomCode = async (e) => {
-    e.preventDefault();
-    if (!selectedUserId || !customCode.trim()) return;
-    setSaving(true);
-    setErrorMsg('');
-    try {
-      const token = localStorage.getItem('gm_token');
-      const res = await axios.post(`${API_URL}/admin/user/update`, {
-        userId: selectedUserId,
-        referralCode: customCode.toUpperCase().trim()
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.data.success) {
-        setShowModal(false);
-        setSelectedUserId('');
-        setCustomCode('');
-        if (onRefresh) onRefresh();
-      }
-    } catch (err) {
-      setErrorMsg(err.response?.data?.message || 'Failed to update referral code');
-    } finally {
-      setSaving(false);
-    }
-  };
+  const filteredGlobalCodes = globalCodes.filter(g => {
+    const q = searchQuery.toLowerCase();
+    return g.code.toLowerCase().includes(q);
+  });
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 6px 0' }}>User Referral Codes</h2>
-          <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Quick lookup panel to view and copy referral codes and invitation links for all registered members.</p>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 6px 0' }}>Referral Codes</h2>
+          <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Create global codes for unregistered users, or view existing user codes.</p>
         </div>
         <button 
           onClick={() => { setShowModal(true); setErrorMsg(''); }}
@@ -337,28 +384,115 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
         </button>
       </div>
 
-      <div style={{ background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, borderRadius: '24px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
-        <div style={{ position: 'relative', width: '320px', marginBottom: '20px' }}>
-          <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
-          <input 
-            type="text" 
-            placeholder="Search by name, phone, or code..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              background: darkMode ? '#0f172a' : '#f1f5f9',
-              border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`,
-              borderRadius: '12px',
-              padding: '10px 14px 10px 42px',
-              color: 'inherit',
-              fontSize: '13px',
-              outline: 'none',
-              fontFamily: 'inherit'
-            }}
-          />
-        </div>
+      <div style={{ position: 'relative', width: '320px' }}>
+        <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
+        <input 
+          type="text" 
+          placeholder="Search codes..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            width: '100%',
+            background: darkMode ? '#0f172a' : '#f1f5f9',
+            border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`,
+            borderRadius: '12px',
+            padding: '10px 14px 10px 42px',
+            color: 'inherit',
+            fontSize: '13px',
+            outline: 'none',
+            fontFamily: 'inherit'
+          }}
+        />
+      </div>
 
+      {/* Global Admin Referral Codes Section */}
+      <div style={{ background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, borderRadius: '24px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 16px 0', color: '#16a34a' }}>🔑 Global Codes (Applies to Unregistered Users)</h3>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+            <thead>
+              <tr style={{ borderBottom: `2px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Referral Code</th>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Created By</th>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Created Date</th>
+                <th style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8', fontWeight: 700, textAlign: 'center' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredGlobalCodes.length === 0 ? (
+                <tr>
+                  <td colSpan="4" style={{ padding: '40px 20px', textAlign: 'center', color: '#94a3b8' }}>
+                    No global referral codes created yet.
+                  </td>
+                </tr>
+              ) : (
+                filteredGlobalCodes.map((g, idx) => (
+                  <tr key={g._id} style={{ borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
+                    <td style={{ padding: '16px 20px' }}>
+                      <span style={{ fontSize: '15px', fontWeight: 800, color: '#16a34a', letterSpacing: '1px' }}>{g.code}</span>
+                    </td>
+                    <td style={{ padding: '16px 20px', fontSize: '13px' }}>{g.createdBy?.fullName || 'Admin'} ({g.createdBy?.phone || 'System'})</td>
+                    <td style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8' }}>{new Date(g.createdAt).toLocaleString()}</td>
+                    <td style={{ padding: '16px 20px', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
+                        <button 
+                          onClick={() => handleCopyCode(g.code, 'global', idx)}
+                          style={{
+                            padding: '6px 12px',
+                            background: copiedIndex === `global-${idx}` ? '#16a34a' : 'rgba(22, 163, 74, 0.1)',
+                            color: copiedIndex === `global-${idx}` ? 'white' : '#16a34a',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {copiedIndex === `global-${idx}` ? 'Copied!' : 'Copy Code'}
+                        </button>
+                        <button 
+                          onClick={() => handleCopyLink(g.code, 'global', idx)}
+                          style={{
+                            padding: '6px 12px',
+                            background: copiedLinkIndex === `global-${idx}` ? '#3b82f6' : 'rgba(59, 130, 246, 0.1)',
+                            color: copiedLinkIndex === `global-${idx}` ? 'white' : '#3b82f6',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {copiedLinkIndex === `global-${idx}` ? 'Copied!' : 'Copy Link'}
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteGlobalCode(g._id)}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            color: '#ef4444',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Registered User Referral Codes Section */}
+      <div style={{ background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, borderRadius: '24px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 16px 0', color: '#16a34a' }}>👤 Registered User Codes</h3>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
             <thead>
@@ -389,36 +523,34 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
                     <td style={{ padding: '16px 20px', textAlign: 'center' }}>
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                         <button 
-                          onClick={() => handleCopyCode(u.referralCode, idx)}
+                          onClick={() => handleCopyCode(u.referralCode, 'user', idx)}
                           style={{
                             padding: '6px 12px',
-                            background: copiedIndex === idx ? '#16a34a' : 'rgba(22, 163, 74, 0.1)',
-                            color: copiedIndex === idx ? 'white' : '#16a34a',
+                            background: copiedIndex === `user-${idx}` ? '#16a34a' : 'rgba(22, 163, 74, 0.1)',
+                            color: copiedIndex === `user-${idx}` ? 'white' : '#16a34a',
                             border: 'none',
                             borderRadius: '8px',
                             fontSize: '11px',
                             fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease'
+                            cursor: 'pointer'
                           }}
                         >
-                          {copiedIndex === idx ? 'Copied! ✓' : 'Copy Code'}
+                          {copiedIndex === `user-${idx}` ? 'Copied!' : 'Copy Code'}
                         </button>
                         <button 
-                          onClick={() => handleCopyLink(u.referralCode, idx)}
+                          onClick={() => handleCopyLink(u.referralCode, 'user', idx)}
                           style={{
                             padding: '6px 12px',
-                            background: copiedLinkIndex === idx ? '#3b82f6' : 'rgba(59, 130, 246, 0.1)',
-                            color: copiedLinkIndex === idx ? 'white' : '#3b82f6',
+                            background: copiedLinkIndex === `user-${idx}` ? '#3b82f6' : 'rgba(59, 130, 246, 0.1)',
+                            color: copiedLinkIndex === `user-${idx}` ? 'white' : '#3b82f6',
                             border: 'none',
                             borderRadius: '8px',
                             fontSize: '11px',
                             fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease'
+                            cursor: 'pointer'
                           }}
                         >
-                          {copiedLinkIndex === idx ? 'Copied! ✓' : 'Copy Link'}
+                          {copiedLinkIndex === `user-${idx}` ? 'Copied!' : 'Copy Link'}
                         </button>
                       </div>
                     </td>
@@ -466,34 +598,39 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
               </div>
             )}
 
-            <form onSubmit={handleCreateCustomCode}>
+            <form onSubmit={handleCreateGlobalCode}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '28px' }}>
                 <div>
-                  <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>SELECT MEMBER</label>
-                  <select
-                    required
-                    value={selectedUserId}
-                    onChange={(e) => setSelectedUserId(e.target.value)}
-                    style={{ width: '100%', background: darkMode ? '#0f172a' : '#f1f5f9', border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`, borderRadius: '10px', padding: '12px 14px', color: 'inherit', outline: 'none', fontFamily: 'inherit', cursor: 'pointer' }}
-                  >
-                    <option value="">-- Select Member --</option>
-                    {users.map(u => (
-                      <option key={u._id} value={u._id}>{u.fullName || 'Member'} ({u.phone})</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
                   <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>CUSTOM REFERRAL CODE</label>
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="e.g. VIP100, GROWMORE"
-                    value={customCode}
-                    onChange={(e) => setCustomCode(e.target.value)}
-                    style={{ width: '100%', background: darkMode ? '#0f172a' : '#f1f5f9', border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`, borderRadius: '10px', padding: '12px 14px', color: 'inherit', outline: 'none', fontFamily: 'inherit' }}
-                  />
-                  <small style={{ color: '#94a3b8', fontSize: '11px', marginTop: '6px', display: 'block' }}>Codes are case-insensitive and must be unique.</small>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="e.g. VIP100, GROWMORE"
+                      value={customCode}
+                      onChange={(e) => setCustomCode(e.target.value)}
+                      style={{ flex: 1, background: darkMode ? '#0f172a' : '#f1f5f9', border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`, borderRadius: '10px', padding: '12px 14px', color: 'inherit', outline: 'none', fontFamily: 'inherit' }}
+                    />
+                    <button
+                      type="button"
+                      onClick={generateRandomCode}
+                      style={{
+                        background: '#f59e0b',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '10px',
+                        padding: '0 16px',
+                        fontWeight: 700,
+                        fontSize: '13px',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 10px rgba(245, 158, 11, 0.25)',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      🎲 Random
+                    </button>
+                  </div>
+                  <small style={{ color: '#94a3b8', fontSize: '11px', marginTop: '6px', display: 'block' }}>Codes are case-insensitive, must be unique, and will apply to all unregistered users during signup.</small>
                 </div>
               </div>
 
@@ -510,7 +647,7 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
                   disabled={saving}
                   style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '13px', boxShadow: '0 4px 15px rgba(22, 163, 74, 0.25)' }}
                 >
-                  {saving ? 'Saving...' : 'Save Code'}
+                  {saving ? 'Creating...' : 'Create Code'}
                 </button>
               </div>
             </form>

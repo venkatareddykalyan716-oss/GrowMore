@@ -475,20 +475,35 @@ const register = async (req, res) => {
     let invitedBy = null;
     
     if (inviteCode && inviteCode.trim() !== '') {
+      const formattedCode = inviteCode.toUpperCase().trim();
       const inviter = await User.findOne({ 
-        referralCode: inviteCode.toUpperCase().trim() 
+        referralCode: formattedCode 
       });
       
       if (inviter) {
         invitedBy = inviter._id;
         console.log(`✅ Inviter FOUND: ${inviter.phone} (${inviter.fullName})`);
       } else {
-        console.log(`⚠️ Invitation code "${inviteCode}" NOT FOUND in database`);
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Invalid Invitation Code' 
-        });
+        // Check if it's a global admin referral code
+        const GlobalReferralCode = require('../models/GlobalReferralCode');
+        const globalCode = await GlobalReferralCode.findOne({ code: formattedCode });
+        if (globalCode) {
+          console.log(`✅ Global Inviter Code FOUND: ${formattedCode}`);
+          if (globalCode.createdBy) {
+            invitedBy = globalCode.createdBy;
+          } else {
+            const firstAdmin = await User.findOne({ role: 'admin' });
+            if (firstAdmin) invitedBy = firstAdmin._id;
+          }
+        } else {
+          console.log(`⚠️ Invitation code "${inviteCode}" NOT FOUND in database`);
+          return res.status(400).json({ 
+            success: false, 
+            message: 'Invalid Invitation Code' 
+          });
+        }
       }
+    }
     } else {
       console.log('ℹ️ No invitation code provided');
     }

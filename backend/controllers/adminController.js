@@ -608,5 +608,72 @@ module.exports = {
   adjustReferralCommission,
   getWithdrawalDetails,
   deleteUser,
-  getPromotionRewards
+  getPromotionRewards,
+  getGlobalReferralCodes,
+  createGlobalReferralCode,
+  deleteGlobalReferralCode
+};
+
+const GlobalReferralCode = require('../models/GlobalReferralCode');
+
+// 🔑 Get All Global Referral Codes
+const getGlobalReferralCodes = async (req, res) => {
+  try {
+    const codes = await GlobalReferralCode.find()
+      .populate('createdBy', 'fullName phone')
+      .sort('-createdAt');
+    res.json({ success: true, codes });
+  } catch (error) {
+    console.error('Error fetching global referral codes:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// ➕ Create Global Referral Code
+const createGlobalReferralCode = async (req, res) => {
+  try {
+    const { code } = req.body;
+    if (!code || !code.trim()) {
+      return res.status(400).json({ success: false, message: 'Referral code is required' });
+    }
+    const formattedCode = code.toUpperCase().trim();
+
+    // Check if code exists in User referralCode
+    const existingUser = await User.findOne({ referralCode: formattedCode });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'Referral code is already taken by a registered member' });
+    }
+
+    // Check if code exists in GlobalReferralCode
+    const existingGlobal = await GlobalReferralCode.findOne({ code: formattedCode });
+    if (existingGlobal) {
+      return res.status(400).json({ success: false, message: 'This global referral code already exists' });
+    }
+
+    const newGlobal = await GlobalReferralCode.create({
+      code: formattedCode,
+      createdBy: req.user._id
+    });
+
+    res.json({ success: true, message: 'Global referral code created successfully', newGlobal });
+  } catch (error) {
+    console.error('Error creating global referral code:', error);
+    res.status(500).json({ success: false, message: 'Server error creating global referral code' });
+  }
+};
+
+// 🗑️ Delete Global Referral Code
+const deleteGlobalReferralCode = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const globalCode = await GlobalReferralCode.findById(id);
+    if (!globalCode) {
+      return res.status(404).json({ success: false, message: 'Global referral code not found' });
+    }
+    await globalCode.deleteOne();
+    res.json({ success: true, message: 'Global referral code deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting global referral code:', error);
+    res.status(500).json({ success: false, message: 'Server error deleting global referral code' });
+  }
 };

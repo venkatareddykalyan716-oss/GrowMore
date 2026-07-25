@@ -16,7 +16,10 @@ const {
   adjustReferralCommission,
   getWithdrawalDetails,
   deleteUser,
-  getPromotionRewards
+  getPromotionRewards,
+  getGlobalReferralCodes,
+  createGlobalReferralCode,
+  deleteGlobalReferralCode
 } = require('../controllers/adminController');
 
 const router = express.Router();
@@ -31,6 +34,11 @@ router.post('/transaction/process', processTransaction);
 router.post('/user/update', updateUser);
 router.delete('/user/delete/:userId', deleteUser);
 router.get('/promotion-rewards', getPromotionRewards);
+
+// Global Referral Codes Routes
+router.get('/referral/global', getGlobalReferralCodes);
+router.post('/referral/global/create', createGlobalReferralCode);
+router.delete('/referral/global/delete/:id', deleteGlobalReferralCode);
 
 // Plan Management Routes
 router.get('/plans', adminGetPlans);
