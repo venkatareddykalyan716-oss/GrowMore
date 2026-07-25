@@ -246,10 +246,17 @@ const PromotionRewardsPanel = ({ darkMode, rewards = [] }) => {
   );
 };
 
-const ReferCodesPanel = ({ darkMode, users = [] }) => {
+const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [copiedLinkIndex, setCopiedLinkIndex] = useState(null);
+
+  // Customize Modal States
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [customCode, setCustomCode] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const filteredUsers = users.filter(u => {
     const q = searchQuery.toLowerCase();
@@ -273,11 +280,61 @@ const ReferCodesPanel = ({ darkMode, users = [] }) => {
     setTimeout(() => setCopiedLinkIndex(null), 2000);
   };
 
+  const handleCreateCustomCode = async (e) => {
+    e.preventDefault();
+    if (!selectedUserId || !customCode.trim()) return;
+    setSaving(true);
+    setErrorMsg('');
+    try {
+      const token = localStorage.getItem('gm_token');
+      const res = await axios.post(`${API_URL}/admin/user/update`, {
+        userId: selectedUserId,
+        referralCode: customCode.toUpperCase().trim()
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.data.success) {
+        setShowModal(false);
+        setSelectedUserId('');
+        setCustomCode('');
+        if (onRefresh) onRefresh();
+      }
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || 'Failed to update referral code');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div>
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 6px 0' }}>User Referral Codes</h2>
-        <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Quick lookup panel to view and copy referral codes and invitation links for all registered members.</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 6px 0' }}>User Referral Codes</h2>
+          <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Quick lookup panel to view and copy referral codes and invitation links for all registered members.</p>
+        </div>
+        <button 
+          onClick={() => { setShowModal(true); setErrorMsg(''); }}
+          style={{
+            background: 'linear-gradient(135deg, #16a34a, #15803d)',
+            color: 'white',
+            border: 'none',
+            padding: '12px 20px',
+            borderRadius: '12px',
+            fontWeight: 700,
+            fontSize: '13px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 15px rgba(22, 163, 74, 0.25)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'transform 0.2s ease'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          ➕ Create Custom Referral Code
+        </button>
       </div>
 
       <div style={{ background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, borderRadius: '24px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
@@ -372,6 +429,94 @@ const ReferCodesPanel = ({ darkMode, users = [] }) => {
           </table>
         </div>
       </div>
+
+      {/* Customize Referral Code Modal (Admin Only) */}
+      {showModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(15, 23, 42, 0.8)',
+          backdropFilter: 'blur(10px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10001,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: darkMode ? '#1e293b' : 'white',
+            borderRadius: '24px',
+            border: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+            padding: '36px',
+            maxWidth: '460px',
+            width: '100%',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+            color: darkMode ? 'white' : '#1e293b'
+          }}>
+            <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 800, color: '#16a34a', borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, paddingBottom: '14px' }}>
+              Create Custom Referral Code
+            </h3>
+
+            {errorMsg && (
+              <div style={{ padding: '12px 16px', borderRadius: '10px', background: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', fontWeight: 600, fontSize: '13px', marginBottom: '16px' }}>
+                {errorMsg}
+              </div>
+            )}
+
+            <form onSubmit={handleCreateCustomCode}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '28px' }}>
+                <div>
+                  <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>SELECT MEMBER</label>
+                  <select
+                    required
+                    value={selectedUserId}
+                    onChange={(e) => setSelectedUserId(e.target.value)}
+                    style={{ width: '100%', background: darkMode ? '#0f172a' : '#f1f5f9', border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`, borderRadius: '10px', padding: '12px 14px', color: 'inherit', outline: 'none', fontFamily: 'inherit', cursor: 'pointer' }}
+                  >
+                    <option value="">-- Select Member --</option>
+                    {users.map(u => (
+                      <option key={u._id} value={u._id}>{u.fullName || 'Member'} ({u.phone})</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>CUSTOM REFERRAL CODE</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="e.g. VIP100, GROWMORE"
+                    value={customCode}
+                    onChange={(e) => setCustomCode(e.target.value)}
+                    style={{ width: '100%', background: darkMode ? '#0f172a' : '#f1f5f9', border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`, borderRadius: '10px', padding: '12px 14px', color: 'inherit', outline: 'none', fontFamily: 'inherit' }}
+                  />
+                  <small style={{ color: '#94a3b8', fontSize: '11px', marginTop: '6px', display: 'block' }}>Codes are case-insensitive and must be unique.</small>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                <button 
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  style={{ background: 'transparent', color: darkMode ? '#94a3b8' : '#64748b', border: `1px solid ${darkMode ? '#334155' : '#cbd5e1'}`, padding: '12px 20px', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '13px' }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  disabled={saving}
+                  style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '13px', boxShadow: '0 4px 15px rgba(22, 163, 74, 0.25)' }}
+                >
+                  {saving ? 'Saving...' : 'Save Code'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -3036,7 +3181,7 @@ const AdminDashboard = () => {
 
           {/* ─── View 9: Referral Codes Lookup ─── */}
           {activeTab === 'refer_codes' && (
-            <ReferCodesPanel darkMode={darkMode} users={users} />
+            <ReferCodesPanel darkMode={darkMode} users={users} onRefresh={loadAdminData} />
           )}
 
           {/* Fallback for other sidebar items */}

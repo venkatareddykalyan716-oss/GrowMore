@@ -115,7 +115,7 @@ const processTransaction = async (req, res) => {
 // ⚙️ Adjust User Balance & Status
 const updateUser = async (req, res) => {
   try {
-    const { userId, availableBalance, totalEarnings, isActive, role } = req.body;
+    const { userId, availableBalance, totalEarnings, isActive, role, referralCode } = req.body;
     
     const user = await User.findById(userId);
     if (!user) {
@@ -128,6 +128,14 @@ const updateUser = async (req, res) => {
     if (role !== undefined) user.role = role;
     if (req.body.password !== undefined && req.body.password.trim() !== '') {
       user.password = req.body.password.trim();
+    }
+    if (referralCode !== undefined && referralCode.trim() !== '') {
+      const formattedCode = referralCode.toUpperCase().trim();
+      const existingUser = await User.findOne({ referralCode: formattedCode, _id: { $ne: userId } });
+      if (existingUser) {
+        return res.status(400).json({ success: false, message: 'Referral code is already taken by another user' });
+      }
+      user.referralCode = formattedCode;
     }
 
     await user.save();
