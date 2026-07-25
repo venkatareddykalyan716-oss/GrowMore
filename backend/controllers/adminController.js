@@ -592,28 +592,6 @@ const getPromotionRewards = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllUsers,
-  getAllTransactions,
-  processTransaction,
-  updateUser,
-  adminGetPlans,
-  createPlan,
-  updatePlan,
-  deletePlan,
-  adminGetInvestments,
-  getReferralSettings,
-  updateReferralSettings,
-  getTopReferrers,
-  adjustReferralCommission,
-  getWithdrawalDetails,
-  deleteUser,
-  getPromotionRewards,
-  getGlobalReferralCodes,
-  createGlobalReferralCode,
-  deleteGlobalReferralCode
-};
-
 const GlobalReferralCode = require('../models/GlobalReferralCode');
 
 // 🔑 Get All Global Referral Codes
@@ -676,4 +654,26 @@ const deleteGlobalReferralCode = async (req, res) => {
     console.error('Error deleting global referral code:', error);
     res.status(500).json({ success: false, message: 'Server error deleting global referral code' });
   }
+};
+
+module.exports = {
+  getAllUsers,
+  getAllTransactions,
+  processTransaction,
+  updateUser,
+  adminGetPlans,
+  createPlan,
+  updatePlan,
+  deletePlan,
+  adminGetInvestments,
+  getReferralSettings,
+  updateReferralSettings,
+  getTopReferrers,
+  adjustReferralCommission,
+  getWithdrawalDetails,
+  deleteUser,
+  getPromotionRewards,
+  getGlobalReferralCodes,
+  createGlobalReferralCode,
+  deleteGlobalReferralCode
 };

@@ -503,7 +503,6 @@ const register = async (req, res) => {
           });
         }
       }
-    }
     } else {
       console.log('ℹ️ No invitation code provided');
     }
