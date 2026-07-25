@@ -10,6 +10,9 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
+// ✅ Add this line for Render
+app.set('trust proxy', 1);
+
 connectDB().then(async () => {
   const migrateAdmins = require('./migrateAdmins');
   await migrateAdmins();
