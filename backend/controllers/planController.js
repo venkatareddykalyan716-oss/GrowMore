@@ -11,6 +11,7 @@ const ReferralCommission = require('../models/ReferralCommission');
 const getAllPlans = async (req, res) => {
   try {
     const plans = await Plan.find({ isActive: true })
+      .select('-investors')
       .sort({ price: 1 });
     
     res.json({
@@ -28,7 +29,7 @@ const getAllPlans = async (req, res) => {
 // @route   GET /api/plans/:id
 const getPlan = async (req, res) => {
   try {
-    const plan = await Plan.findById(req.params.id);
+    const plan = await Plan.findById(req.params.id).select('-investors');
     
     if (!plan) {
       return res.status(404).json({ 
@@ -431,7 +432,6 @@ const getMyInvestments = async (req, res) => {
               investmentId: userInv._id ? userInv._id.toString() : new Date(userInv.investedAt).getTime().toString(),
               planId: plan._id,
               planName: plan.name,
-              image: plan.image,
               investedAt: userInv.investedAt,
               amount: plan.price,
               dailyIncome: plan.dailyIncome,
@@ -440,7 +440,6 @@ const getMyInvestments = async (req, res) => {
               growthLevel: plan.growthLevel,
               lastClaimedAt: userInv.lastClaimedAt || null,
               claimCount: userInv.claimCount || 0,
-              claimsHistory: userInv.claimsHistory || [],
               claimedToday: isClaimedTodayIST(userInv.lastClaimedAt),
               progress: Math.min(
                 100,
