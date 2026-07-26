@@ -339,6 +339,8 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [captcha, setCaptcha] = useState({ id: '', text: 'LOADING' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -458,12 +460,28 @@ const Register = () => {
 
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Password</label>
-            <input type="password" name="password" placeholder="Min 6 characters" value={formData.password} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+            <div style={{ position: 'relative' }}>
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="Min 6 characters" value={formData.password} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 45px 12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <span 
+                onClick={() => setShowPassword(!showPassword)} 
+                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', fontSize: '16px', userSelect: 'none' }}
+              >
+                {showPassword ? '👁️' : '👁️‍🗨️'}
+              </span>
+            </div>
           </div>
 
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Confirm Password</label>
-            <input type="password" name="confirmPassword" placeholder="Confirm password" value={formData.confirmPassword} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+            <div style={{ position: 'relative' }}>
+              <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm password" value={formData.confirmPassword} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 45px 12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <span 
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', fontSize: '16px', userSelect: 'none' }}
+              >
+                {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+              </span>
+            </div>
           </div>
 
           <div style={{ marginBottom: '15px' }}>
@@ -634,30 +652,31 @@ const Login = () => {
         <div className="auth-card" style={{ maxWidth: '400px' }}>
           <div style={{ textAlign: 'center', marginBottom: '25px' }}>
             <Logo size={100} />
-            <p style={{ color: '#6b7280', fontSize: '15px', fontWeight: 700, marginTop: '8px' }}>Reset Your Password</p>
+            <h3 style={{ color: '#16a34a', fontSize: '18px', fontWeight: 800, margin: '8px 0 4px 0' }}>Reset Password</h3>
+            <p style={{ color: '#6b7280', fontSize: '12px', margin: 0 }}>Answer your security question to set a new password</p>
           </div>
 
           {error && <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '15px', background: '#fee2e2', color: '#b91c1c', fontSize: '14px' }}>{error}</div>}
-          {forgotSuccess && <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '15px', background: '#d1fae5', color: '#065f46', fontSize: '14px', border: '1px solid #a7f3d0' }}>{forgotSuccess}</div>}
+          {forgotSuccess && <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '15px', background: '#d1fae5', color: '#065f46', fontSize: '14px' }}>{forgotSuccess}</div>}
 
           <form onSubmit={handleForgotSubmit}>
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Phone Number</label>
-              <input type="tel" placeholder="Enter registered phone number" value={forgotData.phone} onChange={(e) => setForgotData({ ...forgotData, phone: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <input type="tel" placeholder="Enter phone number" value={forgotData.phone} onChange={(e) => setForgotData({ ...forgotData, phone: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Security Answer</label>
-              <input type="text" placeholder="Enter your security question answer" value={forgotData.securityAnswer} onChange={(e) => setForgotData({ ...forgotData, securityAnswer: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <input type="text" placeholder="Enter answer to security question" value={forgotData.securityAnswer} onChange={(e) => setForgotData({ ...forgotData, securityAnswer: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>New Password</label>
               <input type="password" placeholder="Enter new password" value={forgotData.newPassword} onChange={(e) => setForgotData({ ...forgotData, newPassword: e.target.value })} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Confirm New Password</label>
               <input type="password" placeholder="Confirm new password" value={forgotData.confirmNewPassword} onChange={(e) => setForgotData({ ...forgotData, confirmNewPassword: e.target.value })} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <button type="submit" disabled={forgotLoading} style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: forgotLoading ? 'not-allowed' : 'pointer', opacity: forgotLoading ? 0.7 : 1 }}>
+            <button type="submit" disabled={forgotLoading} style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: forgotLoading ? 'not-allowed' : 'pointer' }}>
               {forgotLoading ? 'Resetting...' : 'Reset Password'}
             </button>
           </form>
@@ -685,9 +704,17 @@ const Login = () => {
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Phone Number</label>
             <input type="tel" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
           </div>
-          <div style={{ marginBottom: '6px' }}>
+          <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Password</label>
-            <input type="password" name="password" placeholder="Enter password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+            <div style={{ position: 'relative' }}>
+              <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required style={{ width: '100%', padding: '12px 45px 12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <span 
+                onClick={() => setShowPassword(!showPassword)} 
+                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', fontSize: '16px', userSelect: 'none' }}
+              >
+                {showPassword ? '👁️' : '👁️‍🗨️'}
+              </span>
+            </div>
           </div>
           <div style={{ textAlign: 'right', marginBottom: '16px' }}>
             <span 
@@ -3146,6 +3173,17 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
           );
         })}
       </nav>
+      
+      {/* Floating Telegram Support FAB */}
+      <a 
+        href="https://t.me/+neK1dYGhSNw5NjRl" 
+        target="_blank" 
+        rel="noreferrer" 
+        className="support-fab"
+        title="Get Support"
+      >
+        💬
+      </a>
     </div>
   );
 };
