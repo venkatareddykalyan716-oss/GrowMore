@@ -17,7 +17,9 @@ const {
   createRazorpayOrder,
   verifyRazorpayPayment,
   getTeamStats,
-  getReferralHistory
+  getReferralHistory,
+  getBalance,
+  getMyTransactions
 } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
 
@@ -49,6 +51,8 @@ router.post('/register', registerValidation, register);
 router.post('/login', login);
 router.get('/me', protect, getMe);
 router.get('/dashboard', protect, getDashboard);
+router.get('/balance', protect, getBalance);
+router.get('/transactions', protect, getMyTransactions);
 router.post('/bonus/daily', protect, claimDailyBonus);
 router.post('/tasks/complete', protect, completeTask);
 router.post('/money-request', protect, createMoneyRequest);

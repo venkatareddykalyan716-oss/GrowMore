@@ -1244,6 +1244,47 @@ const getReferralHistory = async (req, res) => {
   }
 };
 
+const getBalance = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('availableBalance referralCode phone');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.json({
+      success: true,
+      balance: user.availableBalance || 0,
+      referralCode: user.referralCode || '',
+      phone: user.phone || ''
+    });
+  } catch (error) {
+    console.error('getBalance error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+const getMyTransactions = async (req, res) => {
+  try {
+    const { type } = req.query;
+    const filter = { user: req.user.userId };
+    if (type) {
+      if (type === 'withdrawal') {
+        // filter out investment withdrawals for user history if needed, or include them
+        filter.type = 'withdrawal';
+      } else {
+        filter.type = type;
+      }
+    }
+
+    const transactions = await Transaction.find(filter)
+      .sort('-createdAt')
+      .limit(50);
+    res.json({ success: true, transactions });
+  } catch (error) {
+    console.error('getMyTransactions error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 // ============================
 // 📦 EXPORTS
 // ============================
@@ -1264,5 +1305,7 @@ module.exports = {
   createRazorpayOrder,
   verifyRazorpayPayment,
   getTeamStats,
-  getReferralHistory
+  getReferralHistory,
+  getBalance,
+  getMyTransactions
 };

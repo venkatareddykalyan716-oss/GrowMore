@@ -32,12 +32,16 @@ const Withdraw = () => {
     try {
       const token = localStorage.getItem('gm_token');
       
-      // Load user balance & transaction history
-      const res = await axios.get(`${API_URL}/auth/dashboard`, {
+      // Load user balance & transaction history using optimized lightweight endpoints
+      const balRes = await axios.get(`${API_URL}/auth/balance`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setBalance(res.data.stats.availableBalance || 0);
-      setHistory(res.data.recentTransactions?.filter(t => t.type === 'withdrawal') || []);
+      setBalance(balRes.data.balance || 0);
+
+      const txRes = await axios.get(`${API_URL}/auth/transactions?type=withdrawal`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setHistory(txRes.data.transactions || []);
 
       // Load user bank details from backend
       try {

@@ -32,12 +32,16 @@ const Recharge = () => {
   const loadUserData = async () => {
     try {
       const token = localStorage.getItem('gm_token');
-      const res = await axios.get(`${API_URL}/auth/dashboard`, {
+      const balRes = await axios.get(`${API_URL}/auth/balance`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setBalance(res.data.stats.availableBalance || 0);
-      setPhone(res.data.stats.referralCode || 'Member');
-      setTransactions(res.data.recentTransactions || []);
+      setBalance(balRes.data.balance || 0);
+      setPhone(balRes.data.referralCode || 'Member');
+
+      const txRes = await axios.get(`${API_URL}/auth/transactions?type=recharge`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTransactions(txRes.data.transactions || []);
     } catch (err) {
       console.error('Error loading balance:', err);
     } finally {
