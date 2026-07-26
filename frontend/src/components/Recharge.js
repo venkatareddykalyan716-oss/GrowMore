@@ -9,7 +9,7 @@ const Recharge = () => {
   const [balance, setBalance] = useState(0);
   const [phone, setPhone] = useState('');
   const [amount, setAmount] = useState('600');
-  const [channel, setChannel] = useState('P-Paytm Only');
+  const [channel, setChannel] = useState('P-Jwpay');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
@@ -22,7 +22,7 @@ const Recharge = () => {
   const [copied, setCopied] = useState(false);
 
   const quickAmounts = ['600', '1000', '2000', '3500', '9000', '25000', '50000', '70000', '100000'];
-  const channels = ['P-Jwpay', 'P-Paytm Only'];
+  const channels = ['P-Jwpay'];
   const upiId = channel === 'P-Jwpay' ? 'growmoree@ptyes' : 'venkata9899@freecharge';
 
   useEffect(() => {
