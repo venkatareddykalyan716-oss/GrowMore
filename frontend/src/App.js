@@ -494,9 +494,47 @@ const Register = () => {
 
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Captcha</label>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <input type="text" name="captchaInput" placeholder="Enter captcha" value={formData.captchaInput} onChange={handleChange} required maxLength="5" style={{ flex: 1, padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none' }} />
-              <div onClick={loadCaptcha} style={{ background: '#f0fdf4', color: '#047857', padding: '12px 18px', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', letterSpacing: '4px', fontStyle: 'italic', cursor: 'pointer', textDecoration: 'line-through', border: '2px solid #d1fae5', userSelect: 'none' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%', boxSizing: 'border-box' }}>
+              <input 
+                type="text" 
+                name="captchaInput" 
+                placeholder="Enter captcha" 
+                value={formData.captchaInput} 
+                onChange={handleChange} 
+                required 
+                maxLength="5" 
+                style={{ 
+                  flex: 1, 
+                  minWidth: 0, 
+                  padding: '12px 12px', 
+                  border: '2px solid #e5e7eb', 
+                  borderRadius: '8px', 
+                  fontSize: '14px', 
+                  outline: 'none', 
+                  boxSizing: 'border-box' 
+                }} 
+              />
+              <div 
+                onClick={loadCaptcha} 
+                style={{ 
+                  flexShrink: 0,
+                  background: '#f0fdf4', 
+                  color: '#047857', 
+                  padding: '12px 14px', 
+                  borderRadius: '8px', 
+                  fontWeight: 'bold', 
+                  fontSize: '16px', 
+                  letterSpacing: '2px', 
+                  fontStyle: 'italic', 
+                  cursor: 'pointer', 
+                  textDecoration: 'line-through', 
+                  border: '2px solid #d1fae5', 
+                  userSelect: 'none',
+                  minWidth: '95px',
+                  textAlign: 'center',
+                  boxSizing: 'border-box'
+                }}
+              >
                 {captcha.text}
               </div>
             </div>
