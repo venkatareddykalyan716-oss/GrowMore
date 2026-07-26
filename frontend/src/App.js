@@ -962,9 +962,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
   useEffect(() => {
     if (user && user.id) {
       const initSocket = (ioLib) => {
-        const socketUrl = window.location.origin.includes('localhost') 
-          ? 'http://localhost:5005' 
-          : window.location.origin;
+        const socketUrl = API_URL.replace('/api', '');
         
         const socketClient = ioLib(socketUrl, {
           withCredentials: true
