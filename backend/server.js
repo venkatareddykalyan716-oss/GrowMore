@@ -60,8 +60,7 @@ app.use(cors({
     'http://localhost:3000',
     'http://localhost:3001',
     'http://localhost:3002',
-    'https://growmore4.netlify.app',
-    'https://growmoree.dpdns.org'
+    'https://growmore4.netlify.app'
   ],
   credentials: true
 }));
@@ -130,8 +129,7 @@ const io = socketIo(server, {
       'http://localhost:3000',
       'http://localhost:3001',
       'http://localhost:3002',
-      'https://growmore4.netlify.app',
-      'https://growmoree.dpdns.org'
+      'https://growmore4.netlify.app'
     ],
     credentials: true
   }

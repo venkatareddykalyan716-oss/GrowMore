@@ -22,8 +22,8 @@ const Recharge = () => {
   const [copied, setCopied] = useState(false);
 
   const quickAmounts = ['600', '1000', '2000', '3500', '9000', '25000', '50000', '70000', '100000'];
-  const channels = ['P-Jwpay', 'P-Zo', 'P-Paytm Only', 'P-TomPay'];
-  const upiId = 'venkata9899@freecharge';
+  const channels = ['P-Jwpay', 'P-Paytm Only'];
+  const upiId = channel === 'P-Jwpay' ? 'growmoree@ptyes' : 'venkata9899@freecharge';
 
   useEffect(() => {
     loadUserData();
@@ -428,7 +428,7 @@ const Recharge = () => {
 
             <div className="upi-app-card" onClick={() => triggerUpiDeepLink('generic')}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo.png" alt="Other UPI" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+                <img src="https://download.logo.wine/logo/Unified_Payments_Interface/Unified_Payments_Interface-Logo.wine.png" alt="Other UPI" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                 <strong style={{ fontSize: '14px', color: '#334155' }}>Other UPI Apps</strong>
               </div>
               <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Pay via UPI →</span>
@@ -441,6 +441,19 @@ const Recharge = () => {
             >
               I have completed payment
             </button>
+
+            {/* Tips Section */}
+            <div style={{ marginTop: '24px', background: '#fffbeb', border: '1px solid #fef3c7', borderRadius: '16px', padding: '18px', textAlign: 'left' }}>
+              <strong style={{ color: '#d97706', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                ⚠️ Tips & Instructions
+              </strong>
+              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#b45309', lineHeight: 1.6 }}>
+                <li>Recharge requests are typically processed within <strong>1 minute to 6 hours</strong>.</li>
+                <li><strong>6-Hour Credit Guarantee:</strong> If your submitted recharge is verified but not credited within 6 hours, we will credit <strong>double the recharge amount</strong> to your wallet balance (e.g., ₹600 recharge will be credited as ₹1200).</li>
+                <li>Please double-check the merchant UPI ID and payment amount before finalizing the transaction.</li>
+                <li>Ensure you upload the correct payment receipt screenshot and enter the exact 12-digit UTR/Transaction Ref number.</li>
+              </ul>
+            </div>
           </div>
         )}
 

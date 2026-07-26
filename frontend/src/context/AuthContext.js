@@ -71,21 +71,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    sessionStorage.clear();
-    localStorage.clear();
-    
-    // Clear all cookies
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-
+    sessionStorage.removeItem('gm_token');
+    sessionStorage.removeItem('gm_user');
     setToken(null);
     setUser(null);
-
-    // Replace current history entry with Login page to prevent Back button navigation
-    window.location.replace('/login');
   };
 
   return (

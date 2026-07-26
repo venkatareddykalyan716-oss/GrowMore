@@ -14,24 +14,6 @@ import AboutPage from './components/AboutPage';
 // Define base API URL dynamically
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5005/api';
 
-// Global Axios Interceptor to handle 401 Unauthorized globally
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      sessionStorage.clear();
-      localStorage.clear();
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c
-          .replace(/^ +/, "")
-          .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-      });
-      window.location.href = '/login?expired=true';
-    }
-    return Promise.reject(error);
-  }
-);
-
 const Logo = ({ size = 100, style = {} }) => (
   <img 
     src="/logo.svg" 
@@ -300,21 +282,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    sessionStorage.clear();
-    localStorage.clear();
-    
-    // Clear all cookies
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('gm_token');
+    sessionStorage.removeItem('role');
     setToken(null);
     setUser(null);
-    
-    // Replace current history entry with Login page to prevent Back button navigation
-    window.location.replace('/login');
   };
 
   return (
@@ -595,15 +567,6 @@ const Login = () => {
   const [forgotData, setForgotData] = useState({ phone: '', securityAnswer: '', newPassword: '', confirmNewPassword: '' });
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSuccess, setForgotSuccess] = useState('');
-  
-  const location = useLocation();
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('expired') === 'true') {
-      setError('Session expired. Please login again.');
-    }
-  }, [location]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -2271,7 +2234,20 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
           </div>
 
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <div style={{ display: 'inline-flex', width: '56px', height: '56px', borderRadius: '50%', background: '#d1fae5', color: '#065f46', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '14px' }}></div>
+            <div style={{ 
+              display: 'inline-flex', 
+              width: '56px', 
+              height: '56px', 
+              borderRadius: '50%', 
+              background: 'white', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+              border: '1.5px solid #f1f5f9',
+              marginBottom: '14px' 
+            }}>
+              <ButtonSpecificIcon name="bonus" size={32} color="#16a34a" />
+            </div>
             <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: '#64748b' }}>Enter your gift card reward code below to claim instant bonus cash:</p>
           </div>
 

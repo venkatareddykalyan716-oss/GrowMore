@@ -19,17 +19,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      sessionStorage.clear();
-      localStorage.clear();
-      
-      // Clear cookies
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c
-          .replace(/^ +/, "")
-          .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-      });
-
-      window.location.href = '/login?expired=true';
+      sessionStorage.removeItem('gm_token');
+      sessionStorage.removeItem('gm_user');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
