@@ -579,6 +579,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ phone: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   // Forgot Password States
   const [showForgot, setShowForgot] = useState(false);
