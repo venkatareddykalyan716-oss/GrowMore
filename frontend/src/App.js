@@ -2032,7 +2032,11 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
         <div style={{ background: 'white', borderRadius: '20px', padding: '24px 20px', marginBottom: '18px', border: '1px solid #e2e8f0', boxShadow: '0 8px 30px rgba(0,0,0,0.02)' }}>
           <h3 style={{ color: '#16a34a', fontSize: '18px', fontWeight: 800, margin: '0 0 16px 0' }}>My Products</h3>
           {investmentsLoading ? (
-            <p style={{ fontSize: '13px', color: '#64748b', textAlign: 'center', padding: '10px' }}>Loading products...</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {[1, 2].map(n => (
+                <div key={n} className="loading-skeleton" style={{ height: '80px', width: '100%', borderRadius: '16px' }}></div>
+              ))}
+            </div>
           ) : investments.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '30px 10px', color: '#64748b' }}>
               <div style={{ fontSize: '40px', marginBottom: '12px' }}>🛍️</div>
@@ -2462,7 +2466,11 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
       return (
         <div style={{ padding: '0 4px 18px' }}>
           {plansLoading ? (
-            <p style={{ textAlign: 'center', fontSize: '14px', color: '#64748b', padding: '20px' }}>Loading plans...</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {[1, 2, 3].map(n => (
+                <div key={n} className="loading-skeleton" style={{ height: '94px', width: '100%', borderRadius: '18px' }}></div>
+              ))}
+            </div>
           ) : plans.length === 0 ? (
             <p style={{ textAlign: 'center', fontSize: '14px', color: '#64748b', padding: '20px' }}>No plans available at this time.</p>
           ) : (
