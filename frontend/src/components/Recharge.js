@@ -31,7 +31,7 @@ const Recharge = () => {
 
   const loadUserData = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const balRes = await axios.get(`${API_URL}/auth/balance`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -111,7 +111,7 @@ const Recharge = () => {
 
     setSubmitting(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/auth/money-request`, {
         type: 'recharge',
         amount: Number(amount),

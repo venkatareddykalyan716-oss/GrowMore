@@ -262,7 +262,7 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
   const loadGlobalCodes = async () => {
     setGlobalLoading(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/admin/referral/global`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -308,7 +308,7 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
     setSaving(true);
     setErrorMsg('');
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/admin/referral/global/create`, {
         code: customCode.toUpperCase().trim()
       }, {
@@ -329,7 +329,7 @@ const ReferCodesPanel = ({ darkMode, users = [], onRefresh }) => {
   const handleDeleteGlobalCode = async (id) => {
     if (!window.confirm('Are you sure you want to delete this global referral code?')) return;
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       await axios.delete(`${API_URL}/admin/referral/global/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -673,7 +673,7 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
 
   const loadSettings = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/admin/referral/settings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -689,7 +689,7 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
 
   const loadTopReferrers = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/admin/referral/top`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -710,7 +710,7 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
     e.preventDefault();
     setSavingSettings(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       await axios.post(`${API_URL}/admin/referral/settings/update`, {
         enabled,
         maxLevels,
@@ -739,7 +739,7 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
     if (!selectedUserForAdjust || !adjustAmount) return;
     setAdjusting(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/admin/referral/adjust`, {
         userId: selectedUserForAdjust,
         amount: Number(adjustAmount),
@@ -1019,7 +1019,7 @@ const AdminDashboard = () => {
 
   const loadGiftCodes = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/gift/admin/gift-codes`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1040,7 +1040,7 @@ const AdminDashboard = () => {
   const loadAdminData = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const headers = { Authorization: `Bearer ${token}` };
 
       const [usersRes, txRes, plansRes, invRes, rewardsRes] = await Promise.all([
@@ -1067,7 +1067,7 @@ const AdminDashboard = () => {
   const handleSavePlan = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const headers = { Authorization: `Bearer ${token}` };
       const url = editingPlan 
         ? `${API_URL}/admin/plan/update/${editingPlan._id}`
@@ -1105,7 +1105,7 @@ const AdminDashboard = () => {
   const handleDeletePlan = async (id) => {
     if (!window.confirm('Are you sure you want to delete this investment plan?')) return;
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const headers = { Authorization: `Bearer ${token}` };
       const res = await axios.delete(`${API_URL}/admin/plan/delete/${id}`, { headers });
       if (res.data.success) {
@@ -1120,7 +1120,7 @@ const AdminDashboard = () => {
 
   const handleProcessTx = async (transactionId, status) => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/admin/transaction/process`, {
         transactionId,
         status
@@ -1141,7 +1141,7 @@ const AdminDashboard = () => {
   const handleViewWithdrawDetails = async (withdrawalId) => {
     setLoadingDetails(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/admin/withdrawals/${withdrawalId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1171,7 +1171,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     if (!rejectionReasonInput.trim()) return;
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/admin/transaction/process`, {
         transactionId: rejectionTxId,
         status: 'failed',
@@ -1210,7 +1210,7 @@ const AdminDashboard = () => {
     if (!selectedUser) return;
     setUpdatingUser(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const updateData = {
         userId: selectedUser._id,
         availableBalance: Number(editBalance),
@@ -1245,7 +1245,7 @@ const AdminDashboard = () => {
     }
     setUpdatingUser(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.delete(`${API_URL}/admin/user/delete/${selectedUser._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1266,7 +1266,7 @@ const AdminDashboard = () => {
   const handleSaveGiftCode = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const url = editingGift 
         ? `${API_URL}/gift/admin/gift-codes/${editingGift._id}`
         : `${API_URL}/gift/admin/gift-codes`;
@@ -1298,7 +1298,7 @@ const AdminDashboard = () => {
   const handleDeleteGiftCode = async (id) => {
     if (!window.confirm('Are you sure you want to delete this gift code and all its redemption records?')) return;
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.delete(`${API_URL}/gift/admin/gift-codes/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1315,7 +1315,7 @@ const AdminDashboard = () => {
   const handleViewGiftHistory = async (gift) => {
     setSelectedGiftHistory(gift);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/gift/admin/gift-codes/${gift._id}/history`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1502,9 +1502,9 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('gm_token');
-    localStorage.removeItem('role');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('gm_token');
+    sessionStorage.removeItem('role');
     navigate('/login');
   };
 

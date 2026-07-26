@@ -12,14 +12,14 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('gm_token'));
+  const [token, setToken] = useState(sessionStorage.getItem('gm_token'));
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   const checkAuth = async () => {
-    const storedToken = localStorage.getItem('gm_token');
+    const storedToken = sessionStorage.getItem('gm_token');
     if (storedToken) {
       try {
         const response = await authAPI.getMe();
@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.login({ phone, password });
       const { token: newToken, user: userData } = response.data;
       
-      localStorage.setItem('gm_token', newToken);
-      localStorage.setItem('gm_user', JSON.stringify(userData));
+      sessionStorage.setItem('gm_token', newToken);
+      sessionStorage.setItem('gm_user', JSON.stringify(userData));
       
       setToken(newToken);
       setUser(userData);
@@ -55,8 +55,8 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.register(formData);
       const { token: newToken, user: userData } = response.data;
       
-      localStorage.setItem('gm_token', newToken);
-      localStorage.setItem('gm_user', JSON.stringify(userData));
+      sessionStorage.setItem('gm_token', newToken);
+      sessionStorage.setItem('gm_user', JSON.stringify(userData));
       
       setToken(newToken);
       setUser(userData);
@@ -71,10 +71,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('gm_token');
-    localStorage.removeItem('gm_user');
+    sessionStorage.clear();
+    localStorage.clear();
+    
+    // Clear all cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
     setToken(null);
     setUser(null);
+
+    // Replace current history entry with Login page to prevent Back button navigation
+    window.location.replace('/login');
   };
 
   return (

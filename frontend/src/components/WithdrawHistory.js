@@ -15,7 +15,7 @@ const WithdrawHistory = () => {
 
   const loadUserData = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/auth/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
       });

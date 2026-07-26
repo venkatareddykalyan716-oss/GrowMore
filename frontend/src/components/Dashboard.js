@@ -141,7 +141,7 @@ function Dashboard() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const token = localStorage.getItem('gm_token');
+        const token = sessionStorage.getItem('gm_token');
         const res = await fetch(API_URL + '/auth/dashboard', {
           headers: { 'Authorization': 'Bearer ' + token }
         });

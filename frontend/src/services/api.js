@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('gm_token');
+  const token = sessionStorage.getItem('gm_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -19,9 +19,17 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('gm_token');
-      localStorage.removeItem('gm_user');
-      window.location.href = '/login';
+      sessionStorage.clear();
+      localStorage.clear();
+      
+      // Clear cookies
+      document.cookie.split(";").forEach((c) => {
+        document.cookie = c
+          .replace(/^ +/, "")
+          .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+
+      window.location.href = '/login?expired=true';
     }
     return Promise.reject(error);
   }

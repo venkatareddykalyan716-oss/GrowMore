@@ -30,7 +30,7 @@ const Withdraw = () => {
 
   const loadUserData = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       
       // Load user balance & transaction history using optimized lightweight endpoints
       const balRes = await axios.get(`${API_URL}/auth/balance`, {
@@ -93,7 +93,7 @@ const Withdraw = () => {
 
     setSubmitting(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       
       const description = `Bank Transfer: ${account} (${ifsc})`;
 

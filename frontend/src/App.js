@@ -14,6 +14,24 @@ import AboutPage from './components/AboutPage';
 // Define base API URL dynamically
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5005/api';
 
+// Global Axios Interceptor to handle 401 Unauthorized globally
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      sessionStorage.clear();
+      localStorage.clear();
+      document.cookie.split(";").forEach((c) => {
+        document.cookie = c
+          .replace(/^ +/, "")
+          .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+      window.location.href = '/login?expired=true';
+    }
+    return Promise.reject(error);
+  }
+);
+
 const Logo = ({ size = 100, style = {} }) => (
   <img 
     src="/logo.svg" 
@@ -231,7 +249,7 @@ const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('gm_token'));
+  const [token, setToken] = useState(sessionStorage.getItem('gm_token'));
 
   useEffect(() => {
     const loadUser = async () => {
@@ -256,9 +274,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await axios.post(`${API_URL}/auth/login`, { phone, password });
       const { token, role } = res.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('gm_token', token);
-      localStorage.setItem('role', role);
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('gm_token', token);
+      sessionStorage.setItem('role', role);
       setToken(token);
       setUser(res.data.user || { role });
       return { success: true, role, redirect: res.data.redirect };
@@ -270,9 +288,9 @@ export const AuthProvider = ({ children }) => {
   const register = async (data) => {
     try {
       const res = await axios.post(`${API_URL}/auth/register`, data);
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('gm_token', res.data.token);
-      localStorage.setItem('role', 'user');
+      sessionStorage.setItem('token', res.data.token);
+      sessionStorage.setItem('gm_token', res.data.token);
+      sessionStorage.setItem('role', 'user');
       setToken(res.data.token);
       setUser(res.data.user);
       return { success: true };
@@ -282,11 +300,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('gm_token');
-    localStorage.removeItem('role');
+    sessionStorage.clear();
+    localStorage.clear();
+    
+    // Clear all cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
     setToken(null);
     setUser(null);
+    
+    // Replace current history entry with Login page to prevent Back button navigation
+    window.location.replace('/login');
   };
 
   return (
@@ -300,8 +328,8 @@ export const useAuth = () => React.useContext(AuthContext);
 
 // 🛡️ Protected Route
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('gm_token');
-  const role = localStorage.getItem('role');
+  const token = sessionStorage.getItem('gm_token');
+  const role = sessionStorage.getItem('role');
   
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -316,8 +344,8 @@ const ProtectedRoute = ({ children }) => {
 
 // 👑 Admin Protected Route
 const AdminRoute = ({ children }) => {
-  const token = localStorage.getItem('gm_token');
-  const role = localStorage.getItem('role');
+  const token = sessionStorage.getItem('gm_token');
+  const role = sessionStorage.getItem('role');
   
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -339,8 +367,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [captcha, setCaptcha] = useState({ id: '', text: 'LOADING' });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -460,28 +486,12 @@ const Register = () => {
 
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Password</label>
-            <div style={{ position: 'relative' }}>
-              <input type={showPassword ? "text" : "password"} name="password" placeholder="Min 6 characters" value={formData.password} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 45px 12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
-              <span 
-                onClick={() => setShowPassword(!showPassword)} 
-                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', fontSize: '16px', userSelect: 'none' }}
-              >
-                {showPassword ? '👁️' : '👁️‍🗨️'}
-              </span>
-            </div>
+            <input type="password" name="password" placeholder="Min 6 characters" value={formData.password} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
           </div>
 
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Confirm Password</label>
-            <div style={{ position: 'relative' }}>
-              <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm password" value={formData.confirmPassword} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 45px 12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
-              <span 
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', fontSize: '16px', userSelect: 'none' }}
-              >
-                {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
-              </span>
-            </div>
+            <input type="password" name="confirmPassword" placeholder="Confirm password" value={formData.confirmPassword} onChange={handleChange} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
           </div>
 
           <div style={{ marginBottom: '15px' }}>
@@ -579,17 +589,25 @@ const Login = () => {
   const [formData, setFormData] = useState({ phone: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
 
   // Forgot Password States
   const [showForgot, setShowForgot] = useState(false);
   const [forgotData, setForgotData] = useState({ phone: '', securityAnswer: '', newPassword: '', confirmNewPassword: '' });
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSuccess, setForgotSuccess] = useState('');
+  
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('expired') === 'true') {
+      setError('Session expired. Please login again.');
+    }
+  }, [location]);
 
   useEffect(() => {
     if (isAuthenticated) {
-      const role = localStorage.getItem('role');
+      const role = sessionStorage.getItem('role');
       if (role === 'admin') {
         navigate('/admin/dashboard');
       } else {
@@ -653,31 +671,30 @@ const Login = () => {
         <div className="auth-card" style={{ maxWidth: '400px' }}>
           <div style={{ textAlign: 'center', marginBottom: '25px' }}>
             <Logo size={100} />
-            <h3 style={{ color: '#16a34a', fontSize: '18px', fontWeight: 800, margin: '8px 0 4px 0' }}>Reset Password</h3>
-            <p style={{ color: '#6b7280', fontSize: '12px', margin: 0 }}>Answer your security question to set a new password</p>
+            <p style={{ color: '#6b7280', fontSize: '15px', fontWeight: 700, marginTop: '8px' }}>Reset Your Password</p>
           </div>
 
           {error && <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '15px', background: '#fee2e2', color: '#b91c1c', fontSize: '14px' }}>{error}</div>}
-          {forgotSuccess && <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '15px', background: '#d1fae5', color: '#065f46', fontSize: '14px' }}>{forgotSuccess}</div>}
+          {forgotSuccess && <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '15px', background: '#d1fae5', color: '#065f46', fontSize: '14px', border: '1px solid #a7f3d0' }}>{forgotSuccess}</div>}
 
           <form onSubmit={handleForgotSubmit}>
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Phone Number</label>
-              <input type="tel" placeholder="Enter phone number" value={forgotData.phone} onChange={(e) => setForgotData({ ...forgotData, phone: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <input type="tel" placeholder="Enter registered phone number" value={forgotData.phone} onChange={(e) => setForgotData({ ...forgotData, phone: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Security Answer</label>
-              <input type="text" placeholder="Enter answer to security question" value={forgotData.securityAnswer} onChange={(e) => setForgotData({ ...forgotData, securityAnswer: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
+              <input type="text" placeholder="Enter your security question answer" value={forgotData.securityAnswer} onChange={(e) => setForgotData({ ...forgotData, securityAnswer: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>New Password</label>
               <input type="password" placeholder="Enter new password" value={forgotData.newPassword} onChange={(e) => setForgotData({ ...forgotData, newPassword: e.target.value })} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <div style={{ marginBottom: '15px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Confirm New Password</label>
               <input type="password" placeholder="Confirm new password" value={forgotData.confirmNewPassword} onChange={(e) => setForgotData({ ...forgotData, confirmNewPassword: e.target.value })} required minLength="6" style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <button type="submit" disabled={forgotLoading} style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: forgotLoading ? 'not-allowed' : 'pointer' }}>
+            <button type="submit" disabled={forgotLoading} style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: forgotLoading ? 'not-allowed' : 'pointer', opacity: forgotLoading ? 0.7 : 1 }}>
               {forgotLoading ? 'Resetting...' : 'Reset Password'}
             </button>
           </form>
@@ -705,17 +722,9 @@ const Login = () => {
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Phone Number</label>
             <input type="tel" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
           </div>
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ marginBottom: '6px' }}>
             <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Password</label>
-            <div style={{ position: 'relative' }}>
-              <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required style={{ width: '100%', padding: '12px 45px 12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
-              <span 
-                onClick={() => setShowPassword(!showPassword)} 
-                style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', fontSize: '16px', userSelect: 'none' }}
-              >
-                {showPassword ? '👁️' : '👁️‍🗨️'}
-              </span>
-            </div>
+            <input type="password" name="password" placeholder="Enter password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
           </div>
           <div style={{ textAlign: 'right', marginBottom: '16px' }}>
             <span 
@@ -747,7 +756,7 @@ const Dashboard = () => {
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const token = localStorage.getItem('gm_token');
+        const token = sessionStorage.getItem('gm_token');
         const res = await axios.get(`${API_URL}/auth/dashboard`, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -957,7 +966,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const loadTeamStats = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/auth/team/stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -973,7 +982,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const loadReferralHistory = async (page = 1) => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/auth/team/history?page=${page}&limit=10`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1043,7 +1052,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const loadStats = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/auth/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1066,7 +1075,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const loadBankDetails = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       if (!token) return;
       const res = await axios.get(`${API_URL}/bank/me`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -1092,7 +1101,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
   const loadInvestments = async (showLoading = true) => {
     if (showLoading) setInvestmentsLoading(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/plans/user/my-investments`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1117,7 +1126,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
   const loadPlans = async () => {
     setPlansLoading(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await fetch(`${API_URL}/plans`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1134,7 +1143,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const handleInvest = async (planId) => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/plans/${planId}/invest`, { quantity: 1 }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1151,7 +1160,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const handleClaim = async (planId, investmentId) => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/plans/${planId}/claim/${investmentId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1203,7 +1212,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
       return;
     }
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/auth/bonus/daily`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1217,7 +1226,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const handleCompleteTask = async (taskId) => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/auth/tasks/complete`, { taskId }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1233,7 +1242,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
   const loadPromotionTasks = async () => {
     setTasksLoading(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.get(`${API_URL}/auth/promotion-tasks`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -1250,7 +1259,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
   const handleClaimMilestone = async (taskId) => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(`${API_URL}/auth/promotion-tasks/claim/${taskId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -2270,7 +2279,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
             e.preventDefault();
             if (!giftCodeInput.trim()) return;
             try {
-              const token = localStorage.getItem('gm_token');
+              const token = sessionStorage.getItem('gm_token');
               const res = await axios.post(`${API_URL}/gift/redeem`, { 
                 code: giftCodeInput 
               }, {
@@ -3026,7 +3035,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                 e.preventDefault();
                 if (bankDetailsSaved) return;
                 try {
-                  const token = localStorage.getItem('gm_token');
+                  const token = sessionStorage.getItem('gm_token');
                   const res = await axios.post(`${API_URL}/bank/save`, {
                     accountHolderName: bankDetailsInput.holderName,
                     bankName: bankDetailsInput.bankName,
@@ -3174,17 +3183,6 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
           );
         })}
       </nav>
-      
-      {/* Floating Telegram Support FAB */}
-      <a 
-        href="https://t.me/+neK1dYGhSNw5NjRl" 
-        target="_blank" 
-        rel="noreferrer" 
-        className="support-fab"
-        title="Get Support"
-      >
-        💬
-      </a>
     </div>
   );
 };

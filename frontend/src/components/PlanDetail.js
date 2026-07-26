@@ -46,7 +46,7 @@ const PlanDetail = () => {
 
   const fetchUserBalance = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       if (!token) return;
       const res = await axios.get(`${API_URL}/auth/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -65,7 +65,7 @@ const PlanDetail = () => {
     }
     setInvesting(true);
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       const res = await axios.post(
         `${API_URL}/plans/${id}/invest`,
         { quantity },

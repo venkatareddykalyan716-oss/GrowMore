@@ -83,7 +83,7 @@ const Plans = () => {
 
   const loadPlans = async () => {
     try {
-      const token = localStorage.getItem('gm_token');
+      const token = sessionStorage.getItem('gm_token');
       console.log('Loading plans from:', `${API_URL}/plans`);
       
       const res = await fetch(`${API_URL}/plans`, {
@@ -106,7 +106,7 @@ const Plans = () => {
   };
 
   const handleInvest = async (planId) => {
-    const token = localStorage.getItem('gm_token');
+    const token = sessionStorage.getItem('gm_token');
     try {
       const res = await fetch(`${API_URL}/plans/${planId}/invest`, {
         method: 'POST',
@@ -126,7 +126,7 @@ const Plans = () => {
   };
 
   const handleClaim = async (planId) => {
-    const token = localStorage.getItem('gm_token');
+    const token = sessionStorage.getItem('gm_token');
     try {
       const res = await fetch(`${API_URL}/plans/${planId}/claim`, {
         method: 'POST',
