@@ -962,6 +962,7 @@ const AdminDashboard = () => {
   const [plans, setPlans] = useState([]);
   const [investments, setInvestments] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userSearch, setUserSearch] = useState('');
   const [txSearch, setTxSearch] = useState('');
   const [plansSearch, setPlansSearch] = useState('');
@@ -1707,27 +1708,62 @@ const AdminDashboard = () => {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #16a34a; border-radius: 3px; }
         .sidebar-btn:hover { background: rgba(22, 163, 74, 0.15) !important; color: #16a34a !important; }
+        .sidebar-close-btn:hover { background: ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'} !important; color: #ef4444 !important; }
         .feature-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important; }
         .widget-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(22, 163, 74, 0.1) !important; }
       `}</style>
 
       {/* ─── Sidebar Menu ─── */}
-      <aside style={{ width: '280px', flexShrink: 0, background: darkMode ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)', borderRight: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, backdropFilter: 'blur(20px)', display: 'flex', flexDirection: 'column', zIndex: 10 }}>
-        {/* Sidebar Header */}
-        <div style={{ padding: '24px 28px', borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* GrowMore Logo (leaf + upward arrow icon) */}
-          <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 15px rgba(22, 163, 74, 0.3)' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2L2 22h20L12 2z" />
-              <path d="M12 8v8" />
-              <path d="M9 13l3-3 3 3" />
-            </svg>
+      <aside style={{
+        width: sidebarOpen ? '280px' : '0px',
+        flexShrink: 0,
+        overflow: 'hidden',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        background: darkMode ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+        borderRight: sidebarOpen ? `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` : 'none',
+        backdropFilter: 'blur(20px)',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 10
+      }}>
+        <div style={{ width: '280px', display: 'flex', flexDirection: 'column', height: '100%', flexShrink: 0 }}>
+          {/* Sidebar Header */}
+          <div style={{ padding: '24px 24px', borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {/* GrowMore Logo (leaf + upward arrow icon) */}
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(22, 163, 74, 0.2)' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 22h20L12 2z" />
+                  <path d="M12 8v8" />
+                  <path d="M9 13l3-3 3 3" />
+                </svg>
+              </div>
+              <div>
+                <span style={{ fontSize: '16px', fontWeight: 800, background: 'linear-gradient(135deg, #16a34a, #fbbf24)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'block' }}>GrowMore</span>
+                <span style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#94a3b8' }}>Admin Panel</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94a3b8',
+                fontSize: '18px',
+                cursor: 'pointer',
+                padding: '6px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease'
+              }}
+              className="sidebar-close-btn"
+              title="Close Sidebar"
+            >
+              ✕
+            </button>
           </div>
-          <div>
-            <span style={{ fontSize: '18px', fontWeight: 800, background: 'linear-gradient(135deg, #16a34a, #fbbf24)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'block' }}>GrowMore</span>
-            <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#94a3b8' }}>Admin Panel</span>
-          </div>
-        </div>
 
         {/* Sidebar Nav */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 14px' }}>
@@ -1791,6 +1827,7 @@ const AdminDashboard = () => {
             Logout
           </button>
         </div>
+        </div>
       </aside>
 
       {/* ─── Main Panel Content ─── */}
@@ -1810,41 +1847,66 @@ const AdminDashboard = () => {
           top: 0,
           zIndex: 5
         }}>
-          {/* Search bar */}
-          <div style={{ position: 'relative', width: '300px' }}>
-            <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
-            <input 
-              type="text" 
-              placeholder={
-                activeTab === 'users' ? 'Search user by phone or name...' :
-                activeTab === 'plans' ? 'Search plan by name or growth level...' :
-                activeTab === 'investments' ? 'Search investments by user, plan...' :
-                'Search transaction...'
-              } 
-              value={
-                activeTab === 'users' ? userSearch :
-                activeTab === 'plans' ? plansSearch :
-                activeTab === 'investments' ? investmentsSearch : txSearch
-              }
-              onChange={(e) => {
-                const val = e.target.value;
-                if (activeTab === 'users') setUserSearch(val);
-                else if (activeTab === 'plans') setPlansSearch(val);
-                else if (activeTab === 'investments') setInvestmentsSearch(val);
-                else setTxSearch(val);
-              }}
-              style={{
-                width: '100%',
-                background: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                border: `1px solid ${darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                borderRadius: '12px',
-                padding: '10px 14px 10px 42px',
-                color: 'inherit',
-                fontSize: '13px',
-                outline: 'none',
-                fontFamily: 'inherit'
-              }}
-            />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {!sidebarOpen && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                style={{
+                  background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '8px 14px',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  fontSize: '13px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 10px rgba(22, 163, 74, 0.3)',
+                  transition: 'all 0.2s ease'
+                }}
+                title="Open Sidebar"
+              >
+                ☰ Menu
+              </button>
+            )}
+            {/* Search bar */}
+            <div style={{ position: 'relative', width: '300px' }}>
+              <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
+              <input 
+                type="text" 
+                placeholder={
+                  activeTab === 'users' ? 'Search user by phone or name...' :
+                  activeTab === 'plans' ? 'Search plan by name or growth level...' :
+                  activeTab === 'investments' ? 'Search investments by user, plan...' :
+                  'Search transaction...'
+                } 
+                value={
+                  activeTab === 'users' ? userSearch :
+                  activeTab === 'plans' ? plansSearch :
+                  activeTab === 'investments' ? investmentsSearch : txSearch
+                }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (activeTab === 'users') setUserSearch(val);
+                  else if (activeTab === 'plans') setPlansSearch(val);
+                  else if (activeTab === 'investments') setInvestmentsSearch(val);
+                  else setTxSearch(val);
+                }}
+                style={{
+                  width: '100%',
+                  background: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                  border: `1px solid ${darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                  borderRadius: '12px',
+                  padding: '10px 14px 10px 42px',
+                  color: 'inherit',
+                  fontSize: '13px',
+                  outline: 'none',
+                  fontFamily: 'inherit'
+                }}
+              />
+            </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
