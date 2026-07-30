@@ -35,11 +35,11 @@ connectDB().then(async () => {
           password: 'Kalyan989@', // Will be hashed automatically by pre-save hook in Admin.js
           role: 'admin'
         });
-        console.log(`🛡️ [Startup] Created admin ${adminData.phone}`);
+        console.log("🛡️ [Startup] Created default admin account");
       } else {
         adminObj.password = 'Kalyan989@'; // Sync password
         await adminObj.save();
-        console.log(`🛡️ [Startup] Updated admin password for ${adminData.phone}`);
+        console.log("🛡️ [Startup] Updated default admin account password");
       }
       // Keep collections clean
       await User.deleteOne({ phone: adminData.phone });
