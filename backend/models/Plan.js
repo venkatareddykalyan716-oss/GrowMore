@@ -81,25 +81,7 @@ const planSchema = new mongoose.Schema({
     claimsHistory: {
       type: [Date],
       default: []
-    },
-    lastClaimAt: {
-      type: Date,
-      default: null
-    },
-    nextClaimAt: {
-      type: Date,
-      default: null
-    },
-    totalClaims: {
-      type: Number,
-      default: 0
-    },
-    claimHistory: [{
-      claimedAt: { type: Date, required: true },
-      amount: { type: Number, required: true },
-      ipAddress: { type: String },
-      deviceInfo: { type: String }
-    }]
+    }
   }]
 }, {
   timestamps: true
