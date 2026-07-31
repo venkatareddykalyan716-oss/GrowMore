@@ -20,6 +20,7 @@ const Recharge = () => {
   const [transactionId, setTransactionId] = useState('');
   const [screenshotPreview, setScreenshotPreview] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [selectedApp, setSelectedApp] = useState('phonepe');
 
   const quickAmounts = ['600', '1000', '2000', '3500', '9000', '25000', '50000', '70000', '100000'];
   const channels = ['P-Jwpay', 'P-Pay'];
@@ -116,7 +117,8 @@ const Recharge = () => {
         type: 'recharge',
         amount: Number(amount),
         reference: transactionId.trim(),
-        proofImage: screenshotPreview || ''
+        proofImage: screenshotPreview || '',
+        description: `Recharge via ${selectedApp.toUpperCase()} (UPI Manual)`
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -457,6 +459,47 @@ const Recharge = () => {
             <div style={{ textAlign: 'center', marginBottom: '8px' }}>
               <span style={{ fontSize: '13px', color: '#64748b', display: 'block', fontWeight: 600 }}>Amount Paid</span>
               <strong style={{ fontSize: '28px', color: '#16a34a', fontWeight: 800, marginTop: '2px', display: 'block' }}>₹{amount}</strong>
+            </div>
+
+            {/* Select UPI App Used to Pay */}
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#475569', marginBottom: '8px' }}>
+                Select UPI App Used to Pay <span style={{ color: '#ef4444' }}>*</span>
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+                {[
+                  { id: 'phonepe', name: 'PhonePe', icon: 'https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/phonepe.png' },
+                  { id: 'gpay', name: 'GPay', icon: 'https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/gpay.png' },
+                  { id: 'paytm', name: 'Paytm', icon: 'https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/paytm.png' },
+                  { id: 'other', name: 'Other', icon: 'https://download.logo.wine/logo/Unified_Payments_Interface/Unified_Payments_Interface-Logo.wine.png' }
+                ].map(app => {
+                  const isSelected = selectedApp === app.id;
+                  return (
+                    <button
+                      type="button"
+                      key={app.id}
+                      onClick={() => setSelectedApp(app.id)}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
+                        padding: '12px 8px',
+                        background: isSelected ? '#f0fdf4' : 'white',
+                        border: isSelected ? '2px solid #16a34a' : '1.5px solid #e2e8f0',
+                        borderRadius: '16px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        boxShadow: isSelected ? '0 4px 12px rgba(22, 163, 74, 0.08)' : 'none'
+                      }}
+                    >
+                      <img src={app.icon} alt={app.name} style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: isSelected ? '#15803d' : '#64748b' }}>{app.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* UTR Input */}

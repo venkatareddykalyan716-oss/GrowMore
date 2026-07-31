@@ -326,7 +326,7 @@ const createMoneyRequest = async (req, res) => {
       user: user._id,
       type,
       amount: normalizedAmount,
-      description: type === 'recharge' ? 'Recharge request (UPI Manual)' : 'Withdrawal request',
+      description: type === 'recharge' ? (req.body.description || 'Recharge request (UPI Manual)') : 'Withdrawal request',
       status: 'pending',
       reference: type === 'recharge' && reference ? reference : `${type === 'recharge' ? 'RECHARGE' : 'WITHDRAW'}-${user._id}-${Date.now()}`,
       proofImage: type === 'recharge' && proofImage ? proofImage : ''
