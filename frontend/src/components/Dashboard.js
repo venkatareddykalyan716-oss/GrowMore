@@ -222,8 +222,8 @@ function Dashboard() {
       // Stats
       React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '28px' } },
         [
-          { label: 'Total Earnings', value: '$' + stats.totalEarnings, color: '#f59e0b', bg: '#fffcf2', emoji: '💰' },
-          { label: 'Balance', value: '$' + stats.availableBalance, color: '#10b981', bg: '#f2fbf7', emoji: '💵' },
+          { label: 'Total Earnings', value: '₹' + stats.totalEarnings, color: '#f59e0b', bg: '#fffcf2', emoji: '💰' },
+          { label: 'Balance', value: '₹' + stats.availableBalance, color: '#10b981', bg: '#f2fbf7', emoji: '💵' },
           { label: 'Referrals', value: stats.directReferrals, color: '#3b82f6', bg: '#f2f7fb', emoji: '' },
           { label: 'Team', value: stats.totalTeam, color: '#8b5cf6', bg: '#f7f2fb', emoji: '🌐' }
         ].map((item, i) =>

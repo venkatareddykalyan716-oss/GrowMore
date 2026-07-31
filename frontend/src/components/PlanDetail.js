@@ -234,11 +234,11 @@ const PlanDetail = () => {
           <div style={{ width: '100%', background: '#f8fafc', borderRadius: '16px', border: '1px solid #f1f5f9', padding: '16px 20px', marginBottom: '24px' }}>
             <div className="detail-row">
               <span style={{ color: '#64748b', fontSize: '13px', fontWeight: 500 }}>Daily Income</span>
-              <strong style={{ color: '#16a34a', fontSize: '15px', fontWeight: 700 }}>${plan.dailyIncome}</strong>
+              <strong style={{ color: '#16a34a', fontSize: '15px', fontWeight: 700 }}>₹{plan.dailyIncome}</strong>
             </div>
             <div className="detail-row">
               <span style={{ color: '#64748b', fontSize: '13px', fontWeight: 500 }}>Total Income</span>
-              <strong style={{ color: '#16a34a', fontSize: '15px', fontWeight: 700 }}>${(plan.dailyIncome * plan.duration).toFixed(2)}</strong>
+              <strong style={{ color: '#16a34a', fontSize: '15px', fontWeight: 700 }}>₹{(plan.dailyIncome * plan.duration).toFixed(2)}</strong>
             </div>
             <div className="detail-row">
               <span style={{ color: '#64748b', fontSize: '13px', fontWeight: 500 }}>Duration</span>
@@ -246,7 +246,7 @@ const PlanDetail = () => {
             </div>
             <div className="detail-row">
               <span style={{ color: '#64748b', fontSize: '13px', fontWeight: 500 }}>Plan Price</span>
-              <strong style={{ color: '#16a34a', fontSize: '15px', fontWeight: 700 }}>${plan.price}</strong>
+              <strong style={{ color: '#16a34a', fontSize: '15px', fontWeight: 700 }}>₹{plan.price}</strong>
             </div>
           </div>
 
@@ -274,11 +274,11 @@ const PlanDetail = () => {
           {/* Financial summary for investment */}
           <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', padding: '0 8px' }}>
             <div>
-              <span style={{ fontSize: '12px', color: '#64748b' }}>Wallet Balance: <strong>${userBalance.toFixed(2)}</strong></span>
+              <span style={{ fontSize: '12px', color: '#64748b' }}>Wallet Balance: <strong>₹{userBalance.toFixed(2)}</strong></span>
             </div>
             <div style={{ textAlign: 'right' }}>
               <span style={{ fontSize: '12px', color: '#64748b', display: 'block' }}>Total Cost</span>
-              <strong style={{ fontSize: '20px', color: '#16a34a' }}>${(plan.price * quantity).toFixed(2)}</strong>
+              <strong style={{ fontSize: '20px', color: '#16a34a' }}>₹{(plan.price * quantity).toFixed(2)}</strong>
             </div>
           </div>
 
@@ -350,15 +350,15 @@ const PlanDetail = () => {
             <div style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '16px', padding: '14px 16px', marginBottom: '20px' }}>
               <div className="detail-row" style={{ padding: '8px 0' }}>
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>Plan Price</span>
-                <strong style={{ fontSize: '13px', color: '#1e293b' }}>${plan.price}</strong>
+                <strong style={{ fontSize: '13px', color: '#1e293b' }}>₹{plan.price}</strong>
               </div>
               <div className="detail-row" style={{ padding: '8px 0' }}>
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>Daily Income</span>
-                <strong style={{ fontSize: '13px', color: '#16a34a' }}>${plan.dailyIncome}</strong>
+                <strong style={{ fontSize: '13px', color: '#16a34a' }}>₹{plan.dailyIncome}</strong>
               </div>
               <div className="detail-row" style={{ padding: '8px 0' }}>
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>Total Income</span>
-                <strong style={{ fontSize: '13px', color: '#16a34a' }}>${(plan.dailyIncome * plan.duration).toFixed(2)}</strong>
+                <strong style={{ fontSize: '13px', color: '#16a34a' }}>₹{(plan.dailyIncome * plan.duration).toFixed(2)}</strong>
               </div>
               <div className="detail-row" style={{ padding: '8px 0' }}>
                 <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>Duration</span>
@@ -375,7 +375,7 @@ const PlanDetail = () => {
                   </div>
                   <div className="detail-row" style={{ padding: '8px 0' }}>
                     <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Total Cost</span>
-                    <strong style={{ fontSize: '14px', color: '#16a34a' }}>${(plan.price * quantity).toFixed(2)}</strong>
+                    <strong style={{ fontSize: '14px', color: '#16a34a' }}>₹{(plan.price * quantity).toFixed(2)}</strong>
                   </div>
                 </>
               )}

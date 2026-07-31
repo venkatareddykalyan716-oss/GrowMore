@@ -94,7 +94,7 @@ const Recharge = () => {
   const handleNextStep = () => {
     const numAmount = Number(amount);
     if (!numAmount || numAmount < 500) {
-      setMessage('❌ Minimum recharge amount is $500');
+      setMessage('❌ Minimum recharge amount is ₹500');
       setTimeout(() => setMessage(''), 3000);
       return;
     }
@@ -314,7 +314,7 @@ const Recharge = () => {
             <div style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 8px 30px rgba(0,0,0,0.02)', border: '1px solid rgba(22, 163, 74, 0.15)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div>
                 <span style={{ fontSize: '13px', color: '#64748b', fontWeight: 500, display: 'block', marginBottom: '4px' }}>Balance</span>
-                <strong style={{ fontSize: '28px', color: '#15803d', fontWeight: 800 }}>${balance.toFixed(2)}</strong>
+                <strong style={{ fontSize: '28px', color: '#15803d', fontWeight: 800 }}>₹{balance.toFixed(2)}</strong>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', width: '180px' }}>
                 {channels.map(ch => (
@@ -325,7 +325,7 @@ const Recharge = () => {
 
             {/* Input Card */}
             <div style={{ background: 'white', borderRadius: '20px', padding: '20px', boxShadow: '0 8px 30px rgba(0,0,0,0.02)', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
-              <span style={{ display: 'block', fontSize: '13px', color: '#64748b', fontWeight: 500, marginBottom: '8px' }}>Enter Recharge Amount ($)</span>
+              <span style={{ display: 'block', fontSize: '13px', color: '#64748b', fontWeight: 500, marginBottom: '8px' }}>Enter Recharge Amount (₹)</span>
               <input 
                 type="number" 
                 value={amount} 
@@ -347,8 +347,8 @@ const Recharge = () => {
                     onClick={() => setAmount(val)} 
                     className={`amount-btn ${isActive ? 'active' : ''}`}
                   >
-                    <strong style={{ fontSize: '16px', fontWeight: 800, color: isActive ? 'white' : '#1e293b' }}>${val}</strong>
-                    <span style={{ fontSize: '10px', color: isActive ? 'rgba(255,255,255,0.8)' : '#64748b', marginTop: '4px' }}>Priced at {val}</span>
+                    <strong style={{ fontSize: '16px', fontWeight: 800, color: isActive ? 'white' : '#1e293b' }}>₹{val}</strong>
+                    <span style={{ fontSize: '10px', color: isActive ? 'rgba(255,255,255,0.8)' : '#64748b', marginTop: '4px' }}>Priced at ₹{val}</span>
                   </button>
                 );
               })}
@@ -369,7 +369,7 @@ const Recharge = () => {
               </strong>
               <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#b45309', lineHeight: 1.6 }}>
                 <li>Recharge requests are typically processed within <strong>1 minute to 6 hours</strong>.</li>
-                <li><strong>6-Hour Credit Guarantee:</strong> If your submitted recharge is verified but not credited within 6 hours, we will credit <strong>double the recharge amount</strong> to your wallet balance (e.g., $600 recharge will be credited as $1200).</li>
+                <li><strong>6-Hour Credit Guarantee:</strong> If your submitted recharge is verified but not credited within 6 hours, we will credit <strong>double the recharge amount</strong> to your wallet balance (e.g., ₹600 recharge will be credited as ₹1200).</li>
                 <li>Please double-check the merchant UPI ID and payment amount before finalizing the transaction.</li>
                 <li>Ensure you upload the correct payment receipt screenshot and enter the exact 12-digit UTR/Transaction Ref number.</li>
               </ul>
@@ -382,7 +382,7 @@ const Recharge = () => {
           <div style={{ background: 'white', borderRadius: '24px', padding: '24px', boxShadow: '0 8px 30px rgba(0,0,0,0.02)', border: '1px solid #e2e8f0', marginTop: '20px' }}>
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <span style={{ fontSize: '13px', color: '#64748b', display: 'block', fontWeight: 600 }}>Amount to Recharge</span>
-              <strong style={{ fontSize: '32px', color: '#16a34a', fontWeight: 800, marginTop: '4px', display: 'block' }}>${amount}</strong>
+              <strong style={{ fontSize: '32px', color: '#16a34a', fontWeight: 800, marginTop: '4px', display: 'block' }}>₹{amount}</strong>
             </div>
 
             {/* UPI ID block */}
@@ -449,7 +449,7 @@ const Recharge = () => {
               </strong>
               <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#b45309', lineHeight: 1.6 }}>
                 <li>Recharge requests are typically processed within <strong>1 minute to 6 hours</strong>.</li>
-                <li><strong>6-Hour Credit Guarantee:</strong> If your submitted recharge is verified but not credited within 6 hours, we will credit <strong>double the recharge amount</strong> to your wallet balance (e.g., $600 recharge will be credited as $1200).</li>
+                <li><strong>6-Hour Credit Guarantee:</strong> If your submitted recharge is verified but not credited within 6 hours, we will credit <strong>double the recharge amount</strong> to your wallet balance (e.g., ₹600 recharge will be credited as ₹1200).</li>
                 <li>Please double-check the merchant UPI ID and payment amount before finalizing the transaction.</li>
                 <li>Ensure you upload the correct payment receipt screenshot and enter the exact 12-digit UTR/Transaction Ref number.</li>
               </ul>
@@ -462,7 +462,7 @@ const Recharge = () => {
           <form onSubmit={handleSubmitPayment} style={{ background: 'white', borderRadius: '24px', padding: '24px', boxShadow: '0 8px 30px rgba(0,0,0,0.02)', border: '1px solid #e2e8f0', marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
             <div style={{ textAlign: 'center', marginBottom: '8px' }}>
               <span style={{ fontSize: '13px', color: '#64748b', display: 'block', fontWeight: 600 }}>Amount Paid</span>
-              <strong style={{ fontSize: '28px', color: '#16a34a', fontWeight: 800, marginTop: '2px', display: 'block' }}>${amount}</strong>
+              <strong style={{ fontSize: '28px', color: '#16a34a', fontWeight: 800, marginTop: '2px', display: 'block' }}>₹{amount}</strong>
             </div>
 
             {/* UTR Input */}

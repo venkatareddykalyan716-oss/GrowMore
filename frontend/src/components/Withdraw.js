@@ -75,7 +75,7 @@ const Withdraw = () => {
       return;
     }
     if (numAmount < 250) {
-      setMessage('❌ Minimum withdrawal is $250');
+      setMessage('❌ Minimum withdrawal is ₹250');
       setTimeout(() => setMessage(''), 3000);
       return;
     }
@@ -274,12 +274,12 @@ const Withdraw = () => {
         {/* Balance Card */}
         <div style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 8px 30px rgba(0,0,0,0.02)', border: '1px solid rgba(22, 163, 74, 0.1)', marginBottom: '20px' }}>
           <span style={{ fontSize: '13px', color: '#64748b', fontWeight: 500, display: 'block', marginBottom: '4px' }}>Available Balance</span>
-          <strong style={{ fontSize: '32px', color: '#16a34a', fontWeight: 800 }}>${balance.toFixed(2)}</strong>
+          <strong style={{ fontSize: '32px', color: '#16a34a', fontWeight: 800 }}>₹{balance.toFixed(2)}</strong>
         </div>
 
         {/* Input Card */}
         <div style={{ background: 'white', borderRadius: '20px', padding: '20px', boxShadow: '0 8px 30px rgba(0,0,0,0.02)', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
-          <span style={{ display: 'block', fontSize: '13px', color: '#64748b', fontWeight: 500, marginBottom: '8px' }}>Enter Withdrawal Amount ($)</span>
+          <span style={{ display: 'block', fontSize: '13px', color: '#64748b', fontWeight: 500, marginBottom: '8px' }}>Enter Withdrawal Amount (₹)</span>
           <input 
             type="number" 
             value={amount} 
@@ -291,7 +291,7 @@ const Withdraw = () => {
           />
           {amount && (
             <div style={{ marginTop: '8px', fontSize: '11px', color: '#64748b', fontWeight: 600 }}>
-              Govt Tax (18%): ${(Number(amount) * 0.18).toFixed(2)} | Net Receive: ${(Number(amount) * 0.82).toFixed(2)}
+              Govt Tax (18%): ₹{(Number(amount) * 0.18).toFixed(2)} | Net Receive: ₹{(Number(amount) * 0.82).toFixed(2)}
             </div>
           )}
         </div>

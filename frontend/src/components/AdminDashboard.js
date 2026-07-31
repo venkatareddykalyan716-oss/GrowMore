@@ -77,7 +77,7 @@ const PremiumBarChart = ({ datasets, labels }) => {
                       transition: 'height 0.4s ease',
                       boxShadow: dIdx === 0 ? '0 4px 10px rgba(22, 163, 74, 0.2)' : '0 4px 10px rgba(239, 68, 68, 0.2)'
                     }}
-                    title={`$ ${val}`}
+                    title={`₹ ${val}`}
                   />
                 );
               })}
@@ -871,7 +871,7 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>ADJUST AMOUNT ($)</label>
+                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>ADJUST AMOUNT (₹)</label>
                 <input
                   type="number"
                   required
@@ -1921,12 +1921,12 @@ const AdminDashboard = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '36px' }}>
                 {[
                   { title: 'Total Users', value: totalUsersCount, icon: '', color: '#3b82f6', spark: [20, 24, 28, 35, 45, 52, 60] },
-                  { title: "Today's Revenue", value: `$${(totalRechargeAmt / 30).toFixed(0)}`, icon: '💰', color: '#16a34a', spark: [10, 15, 12, 22, 30, 28, 35] },
-                  { title: 'Monthly Revenue', value: `$${totalRechargeAmt}`, icon: '📈', color: '#fbbf24', spark: [80, 100, 95, 120, 140, 160, 185] },
+                  { title: "Today's Revenue", value: `₹${(totalRechargeAmt / 30).toFixed(0)}`, icon: '💰', color: '#16a34a', spark: [10, 15, 12, 22, 30, 28, 35] },
+                  { title: 'Monthly Revenue', value: `₹${totalRechargeAmt}`, icon: '📈', color: '#fbbf24', spark: [80, 100, 95, 120, 140, 160, 185] },
                   { title: 'Active Investments', value: users.filter(u => u.availableBalance > 0).length, icon: '💼', color: '#8b5cf6', spark: [15, 18, 20, 25, 28, 32, 40] },
                   { title: 'Pending Withdrawals', value: pendingWithdrawals.length, icon: '💸', color: '#ef4444', spark: [8, 6, 12, 15, 5, 8, 3] },
-                  { title: 'Total Deposits', value: `$${totalRechargeAmt}`, icon: '🏦', color: '#06b6d4', spark: [50, 70, 65, 85, 110, 120, 135] },
-                  { title: 'Profit Distributed', value: `$${(totalWithdrawAmt * 0.4).toFixed(0)}`, icon: '🎯', color: '#10b981', spark: [20, 25, 30, 35, 40, 48, 55] },
+                  { title: 'Total Deposits', value: `₹${totalRechargeAmt}`, icon: '🏦', color: '#06b6d4', spark: [50, 70, 65, 85, 110, 120, 135] },
+                  { title: 'Profit Distributed', value: `₹${(totalWithdrawAmt * 0.4).toFixed(0)}`, icon: '🎯', color: '#10b981', spark: [20, 25, 30, 35, 40, 48, 55] },
                   { title: 'Online Users', value: onlineUsersCount, icon: '🟢', color: '#16a34a', spark: [5, 9, 12, 8, 14, 15, 12] }
                 ].map((widget, i) => (
                   <div 
@@ -2519,7 +2519,7 @@ const AdminDashboard = () => {
                       </div>
 
                       <div>
-                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>REWARD VALUE ($ or Level)</label>
+                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>REWARD VALUE (₹ or Level)</label>
                         <input 
                           type="number" 
                           required 
@@ -2791,7 +2791,7 @@ const AdminDashboard = () => {
                             </span>
                           </div>
                           <span style={{ fontSize: '13px', fontWeight: 800, color: statusColor }}>
-                            {isClaimed ? `+$${item.amount}` : '$0.00'}
+                             {isClaimed ? `+₹${item.amount}` : '₹0.00'}
                           </span>
                         </div>
                       );
@@ -2988,9 +2988,9 @@ const AdminDashboard = () => {
               {/* Investments summary stats */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '32px' }}>
                 {[
-                  { title: 'Total Investment Value', value: `$${investments.reduce((sum, inv) => sum + inv.amount, 0).toFixed(2)}`, icon: '💰', color: '#16a34a' },
+                  { title: 'Total Investment Value', value: `₹${investments.reduce((sum, inv) => sum + inv.amount, 0).toFixed(2)}`, icon: '💰', color: '#16a34a' },
                   { title: 'Total Investments Count', value: investments.length, icon: '💼', color: '#3b82f6' },
-                  { title: 'Average Payout P.D.', value: `$${(investments.reduce((sum, inv) => sum + inv.dailyIncome, 0) / (investments.length || 1)).toFixed(2)}`, icon: '📈', color: '#fbbf24' }
+                  { title: 'Average Payout P.D.', value: `₹${(investments.reduce((sum, inv) => sum + inv.dailyIncome, 0) / (investments.length || 1)).toFixed(2)}`, icon: '📈', color: '#fbbf24' }
                 ].map((stat, idx) => (
                   <div key={idx} style={{ background: darkMode ? 'rgba(255,255,255,0.03)' : 'white', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, borderRadius: '18px', padding: '20px', boxShadow: '0 8px 30px rgba(0,0,0,0.01)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
@@ -3128,7 +3128,7 @@ const AdminDashboard = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                       <div>
-                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>PRICE ($)</label>
+                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>PRICE (₹)</label>
                         <input 
                           type="number" 
                           required 
@@ -3139,7 +3139,7 @@ const AdminDashboard = () => {
                         />
                       </div>
                       <div>
-                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>DAILY INCOME ($)</label>
+                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>DAILY INCOME (₹)</label>
                         <input 
                           type="number" 
                           required 
@@ -3260,7 +3260,7 @@ const AdminDashboard = () => {
                         />
                       </div>
                       <div>
-                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>SHARE INCOME ($)</label>
+                        <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px', fontWeight: 600 }}>SHARE INCOME (₹)</label>
                         <input 
                           type="number" 
                           placeholder="e.g. 5"
@@ -3366,7 +3366,7 @@ const AdminDashboard = () => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '28px' }}>
               <div>
-                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>AVAILABLE BALANCE ($)</label>
+                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>AVAILABLE BALANCE (₹)</label>
                 <input 
                   type="number" 
                   value={editBalance} 
@@ -3376,7 +3376,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>TOTAL EARNINGS ($)</label>
+                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '6px', fontWeight: 600 }}>TOTAL EARNINGS (₹)</label>
                 <input 
                   type="number" 
                   value={editEarnings} 
