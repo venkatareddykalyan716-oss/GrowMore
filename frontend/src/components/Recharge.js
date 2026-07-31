@@ -22,8 +22,8 @@ const Recharge = () => {
   const [copied, setCopied] = useState(false);
 
   const quickAmounts = ['600', '1000', '2000', '3500', '9000', '25000', '50000', '70000', '100000'];
-  const channels = ['P-Jwpay'];
-  const upiId = channel === 'P-Jwpay' ? 'growmoree@ptyes' : 'venkata9899@freecharge';
+  const channels = ['P-Jwpay', 'P-Pay'];
+  const upiId = channel === 'P-Jwpay' ? 'growmoree@ptyes' : 'gromore@freecharge';
 
   useEffect(() => {
     loadUserData();
