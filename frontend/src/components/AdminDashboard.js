@@ -979,6 +979,7 @@ const AdminDashboard = () => {
   const [rejectionTxId, setRejectionTxId] = useState('');
   const [showFullAccount, setShowFullAccount] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [copiedTxId, setCopiedTxId] = useState('');
 
   // Edit user state
   const [editBalance, setEditBalance] = useState('');
@@ -1116,6 +1117,12 @@ const AdminDashboard = () => {
       setMessage('❌ Failed to delete plan');
     }
     setTimeout(() => setMessage(''), 3000);
+  };
+
+  const handleCopyUtr = (ref, txId) => {
+    navigator.clipboard.writeText(ref);
+    setCopiedTxId(txId);
+    setTimeout(() => setCopiedTxId(''), 1500);
   };
 
   const handleProcessTx = async (transactionId, status) => {
@@ -2174,7 +2181,28 @@ const AdminDashboard = () => {
                   }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <span style={{ fontSize: '14px', fontWeight: 700 }}>User Phone: {tx.user?.phone || '—'}</span>
-                      <span style={{ fontSize: '12px', color: '#94a3b8' }}>Ref (UTR): {tx.reference}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '12px', color: '#94a3b8' }}>Ref (UTR): {tx.reference}</span>
+                        <button
+                          onClick={() => handleCopyUtr(tx.reference, tx._id)}
+                          style={{
+                            background: copiedTxId === tx._id ? '#16a34a' : 'rgba(255, 255, 255, 0.08)',
+                            color: copiedTxId === tx._id ? 'white' : '#94a3b8',
+                            border: 'none',
+                            borderRadius: '6px',
+                            padding: '3px 8px',
+                            fontSize: '10px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                        >
+                          {copiedTxId === tx._id ? '✅ Copied' : '📋 Copy'}
+                        </button>
+                      </div>
                       <span style={{ fontSize: '11px', color: '#94a3b8' }}>Submitted: {new Date(tx.createdAt).toLocaleString()}</span>
                       {tx.proofImage && (
                         <span 
