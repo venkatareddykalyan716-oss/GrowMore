@@ -412,7 +412,7 @@ const Recharge = () => {
             {/* Recharge Instructions */}
             <div style={{ marginTop: '24px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '20px', textAlign: 'left' }}>
               <strong style={{ color: '#0f172a', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', fontWeight: 800 }}>
-                📋 Recharge Instructions:
+                Recharge Instructions:
               </strong>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
