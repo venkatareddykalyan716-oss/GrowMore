@@ -2014,6 +2014,14 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
             >
               <span>✈️</span> Telegram Channel
             </a>
+            <a 
+              href="https://t.me/Growmoreagent" 
+              target="_blank" 
+              rel="noreferrer" 
+              style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '13px' }}
+            >
+              <span>✈️</span> Telegram Agent
+            </a>
           </div>
         </div>
       );
@@ -3074,6 +3082,14 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                   style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '14px' }}
                 >
                   <span>✈️</span> Telegram Support Channel
+                </a>
+                <a 
+                  href="https://t.me/Growmoreagent" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '14px' }}
+                >
+                  <span>✈️</span> Telegram Agent
                 </a>
               </div>
             )}
