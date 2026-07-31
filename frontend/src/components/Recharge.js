@@ -399,40 +399,7 @@ const Recharge = () => {
               </div>
             </div>
 
-            {/* UPI Apps Header */}
-            <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1e293b', marginBottom: '14px' }}>Select UPI App to Pay:</h4>
 
-            <div className="upi-app-card" onClick={() => triggerUpiDeepLink('phonepe')}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/phonepe.png" alt="PhonePe" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
-                <strong style={{ fontSize: '14px', color: '#334155' }}>PhonePe</strong>
-              </div>
-              <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Pay via PhonePe →</span>
-            </div>
-
-            <div className="upi-app-card" onClick={() => triggerUpiDeepLink('gpay')}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/gpay.png" alt="Google Pay" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
-                <strong style={{ fontSize: '14px', color: '#334155' }}>Google Pay</strong>
-              </div>
-              <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Pay via GPay →</span>
-            </div>
-
-            <div className="upi-app-card" onClick={() => triggerUpiDeepLink('paytm')}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/paytm.png" alt="Paytm" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
-                <strong style={{ fontSize: '14px', color: '#334155' }}>Paytm</strong>
-              </div>
-              <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Pay via Paytm →</span>
-            </div>
-
-            <div className="upi-app-card" onClick={() => triggerUpiDeepLink('generic')}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="https://download.logo.wine/logo/Unified_Payments_Interface/Unified_Payments_Interface-Logo.wine.png" alt="Other UPI" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
-                <strong style={{ fontSize: '14px', color: '#334155' }}>Other UPI Apps</strong>
-              </div>
-              <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 700 }}>Pay via UPI →</span>
-            </div>
 
             <button 
               onClick={() => setStep(3)} 
