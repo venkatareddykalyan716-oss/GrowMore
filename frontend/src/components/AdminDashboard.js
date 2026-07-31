@@ -166,7 +166,7 @@ const PromotionRewardsPanel = ({ darkMode, rewards = [] }) => {
           <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justify: 'center', fontSize: '24px' }}>💰</div>
           <div>
             <h4 style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 600, margin: '0 0 4px 0' }}>Total Milestone Payouts</h4>
-            <p style={{ fontSize: '22px', fontWeight: 800, margin: 0, color: '#16a34a' }}>${totalPayout.toFixed(2)}</p>
+            <p style={{ fontSize: '22px', fontWeight: 800, margin: 0, color: '#16a34a' }}>₹{totalPayout.toFixed(2)}</p>
           </div>
         </div>
       </div>
@@ -220,7 +220,7 @@ const PromotionRewardsPanel = ({ darkMode, rewards = [] }) => {
                       <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginTop: '1px' }}>ID: {reward.userId?._id || 'N/A'}</span>
                     </td>
                     <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 600 }}>{reward.taskId?.taskTitle || 'Unknown Task'}</td>
-                    <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 800, color: '#16a34a' }}>${reward.reward}</td>
+                    <td style={{ padding: '16px 20px', fontSize: '14px', fontWeight: 800, color: '#16a34a' }}>₹{reward.reward}</td>
                     <td style={{ padding: '16px 20px', fontSize: '12px', color: '#94a3b8' }}>{new Date(reward.createdAt).toLocaleString()}</td>
                     <td style={{ padding: '16px 20px' }}>
                       <span style={{
@@ -937,8 +937,8 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
                     <td style={{ padding: '12px', fontSize: '12px', color: '#94a3b8' }}>{item.phone}</td>
                     <td style={{ padding: '12px', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700 }}>{item.referralCode}</td>
                     <td style={{ padding: '12px', fontSize: '13px', fontWeight: 700 }}>{item.directCount} members</td>
-                    <td style={{ padding: '12px', fontSize: '13px', color: '#16a34a', fontWeight: 700 }}>${item.availableBalance}</td>
-                    <td style={{ padding: '12px', fontSize: '13px', color: '#16a34a', fontWeight: 700 }}>${item.totalEarnings}</td>
+                    <td style={{ padding: '12px', fontSize: '13px', color: '#16a34a', fontWeight: 700 }}>₹{item.availableBalance}</td>
+                    <td style={{ padding: '12px', fontSize: '13px', color: '#16a34a', fontWeight: 700 }}>₹{item.totalEarnings}</td>
                   </tr>
                 ))
               )}
@@ -2085,8 +2085,8 @@ const AdminDashboard = () => {
                         <td style={{ padding: '16px', fontWeight: 600, fontSize: '13px' }}>{user.phone}</td>
                         <td style={{ padding: '16px', fontSize: '13px' }}>{user.fullName || '—'}</td>
                         <td style={{ padding: '16px', fontSize: '13px', fontWeight: 600, color: '#16a34a' }}>{user.referralCode}</td>
-                        <td style={{ padding: '16px', fontSize: '13px', fontWeight: 700 }}>${user.availableBalance.toFixed(2)}</td>
-                        <td style={{ padding: '16px', fontSize: '13px', fontWeight: 700 }}>${user.totalEarnings.toFixed(2)}</td>
+                        <td style={{ padding: '16px', fontSize: '13px', fontWeight: 700 }}>₹{user.availableBalance.toFixed(2)}</td>
+                        <td style={{ padding: '16px', fontSize: '13px', fontWeight: 700 }}>₹{user.totalEarnings.toFixed(2)}</td>
                         <td style={{ padding: '16px' }}>
                           <span style={{
                             padding: '4px 8px',
@@ -2146,7 +2146,7 @@ const AdminDashboard = () => {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: '#94a3b8', alignItems: 'center' }}>
                     <span>Showing <strong>{filteredTxs.filter(t => t.type === 'recharge').length}</strong> requests</span>
                     <span>•</span>
-                    <span>Total Recharge Value: <strong style={{ color: '#16a34a' }}>${transactions.filter(t => t.type === 'recharge' && t.status === 'completed').reduce((acc, curr) => acc + curr.amount, 0)}</strong></span>
+                    <span>Total Recharge Value: <strong style={{ color: '#16a34a' }}>₹{transactions.filter(t => t.type === 'recharge' && t.status === 'completed').reduce((acc, curr) => acc + curr.amount, 0)}</strong></span>
                     <span>•</span>
                     <span>Total Recharge Count: <strong>{transactions.filter(t => t.type === 'recharge').length}</strong> requests (<strong>{transactions.filter(t => t.type === 'recharge' && t.status === 'completed').length}</strong> completed)</span>
                   </div>
@@ -2187,7 +2187,7 @@ const AdminDashboard = () => {
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: 800, color: '#16a34a' }}>${tx.amount}</span>
+                      <span style={{ fontSize: '18px', fontWeight: 800, color: '#16a34a' }}>₹{tx.amount}</span>
                       <span style={{
                         padding: '4px 10px',
                         borderRadius: '20px',
@@ -2233,7 +2233,7 @@ const AdminDashboard = () => {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: '#94a3b8', alignItems: 'center' }}>
                     <span>Showing <strong>{filteredTxs.filter(t => t.type === 'withdrawal').length}</strong> requests</span>
                     <span>•</span>
-                    <span>Total Withdraw Value: <strong style={{ color: '#ef4444' }}>${transactions.filter(t => t.type === 'withdrawal' && t.status === 'completed').reduce((acc, curr) => acc + curr.amount, 0)}</strong></span>
+                    <span>Total Withdraw Value: <strong style={{ color: '#ef4444' }}>₹{transactions.filter(t => t.type === 'withdrawal' && t.status === 'completed').reduce((acc, curr) => acc + curr.amount, 0)}</strong></span>
                     <span>•</span>
                     <span>Total Withdraw Count: <strong>{transactions.filter(t => t.type === 'withdrawal').length}</strong> requests (<strong>{transactions.filter(t => t.type === 'withdrawal' && t.status === 'completed').length}</strong> completed)</span>
                   </div>
@@ -2278,7 +2278,7 @@ const AdminDashboard = () => {
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: 800, color: '#ef4444' }}>${tx.amount}</span>
+                      <span style={{ fontSize: '18px', fontWeight: 800, color: '#ef4444' }}>₹{tx.amount}</span>
                       <span style={{
                         padding: '4px 10px',
                         borderRadius: '20px',
@@ -2407,7 +2407,7 @@ const AdminDashboard = () => {
                               {code.rewardType.replace('_', ' ')}
                             </td>
                             <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 700, color: '#16a34a' }}>
-                              ${code.rewardAmount}
+                              ₹{code.rewardAmount}
                             </td>
                             <td style={{ padding: '16px 20px', fontSize: '12px' }}>
                               {code.currentRedemptions} / {code.maxRedemptions}
@@ -2664,7 +2664,7 @@ const AdminDashboard = () => {
                           <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginTop: '2px' }}>{new Date(log.redeemedAt).toLocaleString()}</span>
                         </div>
                         <span style={{ fontSize: '13px', fontWeight: 800, color: '#16a34a' }}>
-                          +${log.rewardAmount}
+                          +₹{log.rewardAmount}
                         </span>
                       </div>
                     ))
@@ -2894,11 +2894,11 @@ const AdminDashboard = () => {
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', background: darkMode ? 'rgba(255,255,255,0.01)' : '#f8fafc', padding: '12px', borderRadius: '12px', border: `1px solid ${darkMode ? 'rgba(255,255,255,0.03)' : '#f1f5f9'}` }}>
                         <div>
                           <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8' }}>PLAN PRICE</span>
-                          <strong style={{ fontSize: '14px', color: '#16a34a' }}>${plan.price}</strong>
+                          <strong style={{ fontSize: '14px', color: '#16a34a' }}>₹{plan.price}</strong>
                         </div>
                         <div>
                           <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8' }}>DAILY INCOME</span>
-                          <strong style={{ fontSize: '14px', color: '#fbbf24' }}>${plan.dailyIncome}/day</strong>
+                          <strong style={{ fontSize: '14px', color: '#fbbf24' }}>₹{plan.dailyIncome}/day</strong>
                         </div>
                         <div style={{ marginTop: '6px' }}>
                           <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8' }}>DURATION</span>
@@ -3055,8 +3055,8 @@ const AdminDashboard = () => {
                               <span style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginTop: '2px' }}>{inv.user?.phone || 'Unknown'}</span>
                             </td>
                             <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 600 }}>{inv.planName}</td>
-                            <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 700, color: '#16a34a' }}>${inv.amount}</td>
-                            <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 700, color: '#fbbf24' }}>${inv.dailyIncome}/day</td>
+                            <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 700, color: '#16a34a' }}>₹{inv.amount}</td>
+                            <td style={{ padding: '16px 20px', fontSize: '13px', fontWeight: 700, color: '#fbbf24' }}>₹{inv.dailyIncome}/day</td>
                             <td 
                               onClick={() => setSelectedClaimsLog(inv)}
                               style={{ padding: '16px 20px', cursor: 'pointer' }}
@@ -3610,19 +3610,19 @@ const AdminDashboard = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#94a3b8' }}>Gross Amount:</span>
-                    <strong style={{ color: '#f8fafc' }}>${selectedWithdrawal.withdrawal.amount.toFixed(2)}</strong>
+                    <strong style={{ color: '#f8fafc' }}>₹{selectedWithdrawal.withdrawal.amount.toFixed(2)}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#94a3b8' }}>Tax / Fee (18%):</span>
-                    <strong style={{ color: '#ef4444' }}>${(selectedWithdrawal.withdrawal.amount * 0.18).toFixed(2)}</strong>
+                    <strong style={{ color: '#ef4444' }}>₹{(selectedWithdrawal.withdrawal.amount * 0.18).toFixed(2)}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '6px', marginTop: '2px' }}>
                     <span style={{ color: '#10b981', fontWeight: 700 }}>Net Transfer:</span>
-                    <strong style={{ color: '#10b981', fontSize: '14px' }}>${(selectedWithdrawal.withdrawal.amount * 0.82).toFixed(2)}</strong>
+                    <strong style={{ color: '#10b981', fontSize: '14px' }}>₹{(selectedWithdrawal.withdrawal.amount * 0.82).toFixed(2)}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
                     <span style={{ color: '#94a3b8' }}>User Wallet Balance:</span>
-                    <strong style={{ color: '#f8fafc' }}>${selectedWithdrawal.user.availableBalance?.toFixed(2) || '0.00'}</strong>
+                    <strong style={{ color: '#f8fafc' }}>₹{selectedWithdrawal.user.availableBalance?.toFixed(2) || '0.00'}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#94a3b8' }}>Request Date:</span>

@@ -3205,7 +3205,7 @@ const LiveRedemptionRecords = () => {
           <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #f1f5f9', animation: idx === 0 ? 'slideIn 0.3s ease-out' : 'none' }}>
             <span style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{item.phone}</span>
             <span style={{ fontSize: '11px', background: '#f0fdf4', color: '#16a34a', padding: '4px 10px', borderRadius: '12px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-              +${item.amount}
+              +₹{item.amount}
             </span>
           </div>
         ))}
@@ -3307,7 +3307,7 @@ const TreeVisualizer = ({ teamList, userId }) => {
                   {item.status}
                 </span>
                 <span style={{ display: 'block', fontSize: '11px', color: '#16a34a', fontWeight: 700, marginTop: '4px' }}>
-                  +${item.totalIncome} Earned
+                  +₹{item.totalIncome} Earned
                 </span>
               </div>
             </div>
