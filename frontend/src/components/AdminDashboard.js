@@ -3601,15 +3601,43 @@ const AdminDashboard = () => {
                       <span style={{ color: '#94a3b8' }}>Bank Name:</span>
                       <strong style={{ color: '#f8fafc' }}>{selectedWithdrawal.bankDetails.bankName}</strong>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ color: '#94a3b8' }}>Account Number:</span>
-                      <strong style={{ color: '#f8fafc', letterSpacing: '0.5px' }}>
-                        {selectedWithdrawal.bankDetails.accountNumber}
-                      </strong>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <strong style={{ color: '#f8fafc', letterSpacing: '0.5px' }}>
+                          {selectedWithdrawal.bankDetails.accountNumber}
+                        </strong>
+                        <span
+                          onClick={() => handleCopyUtr(selectedWithdrawal.bankDetails.accountNumber, 'acc')}
+                          style={{
+                            cursor: 'pointer',
+                            fontSize: '13px',
+                            color: copiedTxId === 'acc' ? '#16a34a' : '#94a3b8',
+                            transition: 'color 0.2s'
+                          }}
+                          title="Copy Account Number"
+                        >
+                          {copiedTxId === 'acc' ? '✅' : '📋'}
+                        </span>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ color: '#94a3b8' }}>IFSC Code:</span>
-                      <strong style={{ color: '#f8fafc', fontFamily: 'monospace' }}>{selectedWithdrawal.bankDetails.ifscCode}</strong>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <strong style={{ color: '#f8fafc', fontFamily: 'monospace' }}>{selectedWithdrawal.bankDetails.ifscCode}</strong>
+                        <span
+                          onClick={() => handleCopyUtr(selectedWithdrawal.bankDetails.ifscCode, 'ifsc')}
+                          style={{
+                            cursor: 'pointer',
+                            fontSize: '13px',
+                            color: copiedTxId === 'ifsc' ? '#16a34a' : '#94a3b8',
+                            transition: 'color 0.2s'
+                          }}
+                          title="Copy IFSC Code"
+                        >
+                          {copiedTxId === 'ifsc' ? '✅' : '📋'}
+                        </span>
+                      </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ color: '#94a3b8' }}>Branch Name:</span>
