@@ -842,6 +842,84 @@ const Dashboard = () => {
   );
 };
 
+const InvestmentClaimRow = ({ inv, serverTimeDrift, handleClaim }) => {
+  const [timeLeftStr, setTimeLeftStr] = useState('');
+  const [canClaim, setCanClaim] = useState(!inv.claimedToday);
+
+  useEffect(() => {
+    if (!inv.nextClaimAt) {
+      setCanClaim(!inv.claimedToday);
+      setTimeLeftStr('');
+      return;
+    }
+
+    const updateCountdown = () => {
+      const adjustedNow = Date.now() - serverTimeDrift;
+      const targetTime = new Date(inv.nextClaimAt).getTime();
+      const diffMs = targetTime - adjustedNow;
+
+      if (diffMs <= 0) {
+        setCanClaim(true);
+        setTimeLeftStr('');
+      } else {
+        setCanClaim(false);
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const formatted = [hours, minutes, seconds].map(v => String(v).padStart(2, '0')).join(':');
+        setTimeLeftStr(formatted);
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [inv.nextClaimAt, inv.claimedToday, serverTimeDrift]);
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: '#f8fafc', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+      <div>
+        <h4 style={{ margin: '0 0 4px', fontSize: '14px', color: '#1e293b', fontWeight: 700 }}>{inv.planName || 'Investment Plan'}</h4>
+        <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Invested: <strong style={{ color: '#1e293b' }}>₹{inv.amount || 0}</strong></p>
+        <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Daily income: <strong style={{ color: '#16a34a' }}>₹{inv.dailyIncome || 0}</strong></p>
+      </div>
+      <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+        <span style={{ fontSize: '10px', background: '#d1fae5', color: '#065f46', padding: '4px 10px', borderRadius: '12px', fontWeight: 800 }}>ACTIVE</span>
+        <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8' }}>{(inv.daysLeft !== undefined ? inv.daysLeft : inv.duration)} Days left</span>
+        
+        {timeLeftStr && (
+          <span style={{ display: 'block', fontSize: '10px', color: '#ef4444', fontWeight: 700, marginTop: '2px', fontFamily: 'monospace' }}>
+            ⏳ {timeLeftStr}
+          </span>
+        )}
+        
+        <button
+          onClick={() => handleClaim(inv.planId, inv.investmentId)}
+          disabled={!canClaim}
+          style={{
+            marginTop: '4px',
+            padding: '6px 14px',
+            borderRadius: '8px',
+            border: 'none',
+            color: 'white',
+            background: !canClaim 
+              ? '#94a3b8' 
+              : 'linear-gradient(135deg, #16a34a, #15803d)',
+            fontWeight: 700,
+            fontSize: '11px',
+            cursor: !canClaim ? 'not-allowed' : 'pointer',
+            boxShadow: !canClaim ? 'none' : '0 4px 10px rgba(22, 163, 74, 0.2)',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          {!canClaim ? 'CLAIMED' : 'CLAIM'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // 📱 Mobile Dashboard View
 const MobileDashboard = ({ requests = [], setRequests }) => {
   const navigate = useNavigate();
@@ -876,6 +954,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
   const [lastUpdated, setLastUpdated] = useState('');
   const [investments, setInvestments] = useState([]);
   const [investmentsLoading, setInvestmentsLoading] = useState(false);
+  const [serverTimeDrift, setServerTimeDrift] = useState(0);
   const [plans, setPlans] = useState([]);
   const [plansLoading, setPlansLoading] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
@@ -1075,6 +1154,10 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
       const res = await axios.get(`${API_URL}/plans/user/my-investments`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      if (res.data.serverTime) {
+        const drift = Date.now() - new Date(res.data.serverTime).getTime();
+        setServerTimeDrift(drift);
+      }
       setInvestments(res.data.investments || []);
     } catch (err) {
       console.error('Investments load failed:', err);
@@ -2052,38 +2135,12 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {investments.map((inv, idx) => (
-                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: '#f8fafc', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
-                  <div>
-                    <h4 style={{ margin: '0 0 4px', fontSize: '14px', color: '#1e293b', fontWeight: 700 }}>{inv.planName || 'Investment Plan'}</h4>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Invested: <strong style={{ color: '#1e293b' }}>₹{inv.amount || 0}</strong></p>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Daily income: <strong style={{ color: '#16a34a' }}>₹{inv.dailyIncome || 0}</strong></p>
-                  </div>
-                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-                    <span style={{ fontSize: '10px', background: '#d1fae5', color: '#065f46', padding: '4px 10px', borderRadius: '12px', fontWeight: 800 }}>ACTIVE</span>
-                    <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8' }}>{(inv.daysLeft !== undefined ? inv.daysLeft : inv.duration)} Days left</span>
-                    <button
-                      onClick={() => handleClaim(inv.planId, inv.investmentId)}
-                      disabled={inv.claimedToday}
-                      style={{
-                        marginTop: '4px',
-                        padding: '6px 14px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        color: 'white',
-                        background: inv.claimedToday 
-                          ? '#94a3b8' 
-                          : 'linear-gradient(135deg, #16a34a, #15803d)',
-                        fontWeight: 700,
-                        fontSize: '11px',
-                        cursor: inv.claimedToday ? 'not-allowed' : 'pointer',
-                        boxShadow: inv.claimedToday ? 'none' : '0 4px 10px rgba(22, 163, 74, 0.2)',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      {inv.claimedToday ? 'CLAIMED' : 'CLAIM'}
-                    </button>
-                  </div>
-                </div>
+                <InvestmentClaimRow
+                  key={idx}
+                  inv={inv}
+                  serverTimeDrift={serverTimeDrift}
+                  handleClaim={handleClaim}
+                />
               ))}
             </div>
           )}

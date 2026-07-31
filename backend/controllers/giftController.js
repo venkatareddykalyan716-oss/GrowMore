@@ -309,7 +309,8 @@ const redeemGiftCode = async (req, res) => {
       plan.investors.push({
         user: user._id,
         investedAt: new Date(),
-        amount: rewardVal
+        amount: rewardVal,
+        nextClaimAt: new Date()
       });
       plan.availableSlots = Math.max(0, plan.availableSlots - 1);
       await plan.save();

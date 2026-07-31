@@ -87,7 +87,8 @@ const investInPlan = async (req, res) => {
     const investment = {
       user: user._id,
       investedAt: new Date(),
-      amount: totalCost
+      amount: totalCost,
+      nextClaimAt: new Date()
     };
 
     // Update plan
@@ -145,6 +146,17 @@ const isClaimedTodayIST = (lastClaimedDate) => {
          istNow.getUTCFullYear() === istClaimed.getUTCFullYear();
 };
 
+const activeClaims = new Set();
+
+const formatRemainingTime = (ms) => {
+  if (ms <= 0) return '00:00:00';
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return [hours, minutes, seconds].map(val => String(val).padStart(2, '0')).join(':');
+};
+
 // @desc    Claim rewards for specific investment
 // @route   POST /api/plans/:id/claim/:investmentId
 const executeClaim = async (req, res, session) => {
@@ -197,11 +209,33 @@ const executeClaim = async (req, res, session) => {
     };
   }
 
-  // Check if already claimed today in IST
-  if (isClaimedTodayIST(userInvestment.lastClaimedAt)) {
+  // Check if current server time is before nextClaimAt
+  const serverNow = new Date();
+
+  if (userInvestment.nextClaimAt) {
+    if (serverNow < new Date(userInvestment.nextClaimAt)) {
+      const diffMs = new Date(userInvestment.nextClaimAt).getTime() - serverNow.getTime();
+      return {
+        statusCode: 400,
+        data: {
+          success: false,
+          message: "Daily income already claimed. Please wait until the next claim time.",
+          remainingTime: formatRemainingTime(diffMs)
+        }
+      };
+    }
+  } else if (isClaimedTodayIST(userInvestment.lastClaimedAt)) {
+    // Fallback for legacy claims
+    const nextEstimated = new Date(userInvestment.lastClaimedAt);
+    nextEstimated.setHours(nextEstimated.getHours() + 24);
+    const diffMs = nextEstimated.getTime() - serverNow.getTime();
     return {
       statusCode: 400,
-      data: { success: false, message: 'Daily income for this product has already been claimed today' }
+      data: {
+        success: false,
+        message: "Daily income already claimed. Please wait until the next claim time.",
+        remainingTime: formatRemainingTime(Math.max(0, diffMs))
+      }
     };
   }
 
@@ -231,11 +265,28 @@ const executeClaim = async (req, res, session) => {
     await user.save();
   }
 
-  // Mark the investment as claimed today
-  userInvestment.lastClaimedAt = new Date();
-  userInvestment.claimCount = (userInvestment.claimCount || 0) + 1;
+  // Mark the investment as claimed today securely
+  const nextClaimTime = new Date(serverNow.getTime() + 24 * 60 * 60 * 1000);
+  userInvestment.lastClaimAt = serverNow;
+  userInvestment.nextClaimAt = nextClaimTime;
+  userInvestment.totalClaims = (userInvestment.totalClaims || 0) + 1;
+  
+  if (!userInvestment.claimHistory) userInvestment.claimHistory = [];
+  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+  const userAgent = req.headers['user-agent'] || '';
+  userInvestment.claimHistory.push({
+    claimedAt: serverNow,
+    amount: rewardAmount,
+    ipAddress: clientIp,
+    deviceInfo: userAgent.slice(0, 200)
+  });
+
+  // Sync legacy fields
+  userInvestment.lastClaimedAt = serverNow;
+  userInvestment.claimCount = userInvestment.totalClaims;
   if (!userInvestment.claimsHistory) userInvestment.claimsHistory = [];
-  userInvestment.claimsHistory.push(new Date());
+  userInvestment.claimsHistory.push(serverNow);
+
   plan.markModified('investors');
   if (session) {
     await plan.save({ session });
@@ -366,7 +417,8 @@ const executeClaim = async (req, res, session) => {
     statusCode: 200,
     data: {
       success: true,
-      message: `Claimed $${rewardAmount} daily income from ${plan.name}!`,
+      message: "Daily income claimed successfully.",
+      nextClaimAt: nextClaimTime.toISOString(),
       reward: rewardAmount,
       newBalance: user.availableBalance
     }
@@ -374,6 +426,17 @@ const executeClaim = async (req, res, session) => {
 };
 
 const claimRewards = async (req, res) => {
+  const { investmentId } = req.params;
+  
+  if (activeClaims.has(investmentId)) {
+    return res.status(400).json({
+      success: false,
+      message: "Daily income claiming is already in progress for this product. Please wait."
+    });
+  }
+
+  activeClaims.add(investmentId);
+
   let session = null;
   try {
     session = await mongoose.startSession();
@@ -384,6 +447,7 @@ const claimRewards = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
+    activeClaims.delete(investmentId);
     return res.status(result.statusCode).json(result.data);
 
   } catch (error) {
@@ -402,14 +466,17 @@ const claimRewards = async (req, res) => {
       console.warn('⚠️ MongoDB standalone detected. Running claim non-transactionally as fallback.');
       try {
         const fallbackResult = await executeClaim(req, res, null);
+        activeClaims.delete(investmentId);
         return res.status(fallbackResult.statusCode).json(fallbackResult.data);
       } catch (fallbackError) {
         console.error('Claim error (fallback):', fallbackError);
+        activeClaims.delete(investmentId);
         return res.status(500).json({ success: false, message: fallbackError.message || 'Server error' });
       }
     }
 
     console.error('Claim error:', error);
+    activeClaims.delete(investmentId);
     res.status(500).json({ success: false, message: error.message || 'Server error' });
   }
 };
@@ -428,6 +495,10 @@ const getMyInvestments = async (req, res) => {
             const elapsedDays = (Date.now() - new Date(userInv.investedAt).getTime()) / (24 * 60 * 60 * 1000);
             const daysLeft = Math.max(0, plan.duration - Math.floor(elapsedDays));
             
+            const isClaimed = userInv.nextClaimAt 
+              ? (new Date() < new Date(userInv.nextClaimAt)) 
+              : isClaimedTodayIST(userInv.lastClaimedAt);
+
             investments.push({
               investmentId: userInv._id ? userInv._id.toString() : new Date(userInv.investedAt).getTime().toString(),
               planId: plan._id,
@@ -440,7 +511,11 @@ const getMyInvestments = async (req, res) => {
               growthLevel: plan.growthLevel,
               lastClaimedAt: userInv.lastClaimedAt || null,
               claimCount: userInv.claimCount || 0,
-              claimedToday: isClaimedTodayIST(userInv.lastClaimedAt),
+              claimedToday: isClaimed,
+              // Secure Claim System fields
+              lastClaimAt: userInv.lastClaimAt || userInv.lastClaimedAt || null,
+              nextClaimAt: userInv.nextClaimAt || null,
+              totalClaims: userInv.totalClaims || userInv.claimCount || 0,
               progress: Math.min(
                 100,
                 Math.floor(
@@ -455,6 +530,7 @@ const getMyInvestments = async (req, res) => {
 
     res.json({
       success: true,
+      serverTime: new Date().toISOString(),
       investments
     });
   } catch (error) {
