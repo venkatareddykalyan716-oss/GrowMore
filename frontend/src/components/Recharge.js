@@ -420,7 +420,7 @@ const Recharge = () => {
                   "Pay the exact amount displayed on this page.",
                   "After the payment is successful, copy the UTR/Transaction ID from your UPI app.",
                   "Enter the UTR/Transaction ID in the payment form.",
-                  "(Optional) Upload a screenshot of the successful payment.",
+                  "Upload a screenshot of the successful payment.",
                   "Click Submit.",
                   "Your payment will be verified by our team. Once verified, the balance will be credited to your wallet."
                 ].map((text, idx) => (
