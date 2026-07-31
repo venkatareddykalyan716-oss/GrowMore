@@ -409,17 +409,44 @@ const Recharge = () => {
               I have completed payment
             </button>
 
-            {/* Tips Section */}
-            <div style={{ marginTop: '24px', background: '#fffbeb', border: '1px solid #fef3c7', borderRadius: '16px', padding: '18px', textAlign: 'left' }}>
-              <strong style={{ color: '#d97706', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                ⚠️ Tips & Instructions
+            {/* Recharge Instructions */}
+            <div style={{ marginTop: '24px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '20px', textAlign: 'left' }}>
+              <strong style={{ color: '#0f172a', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', fontWeight: 800 }}>
+                📋 Recharge Instructions:
               </strong>
-              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#b45309', lineHeight: 1.6 }}>
-                <li>Recharge requests are typically processed within <strong>1 minute to 6 hours</strong>.</li>
-                <li><strong>6-Hour Credit Guarantee:</strong> If your submitted recharge is verified but not credited within 6 hours, we will credit <strong>double the recharge amount</strong> to your wallet balance (e.g., ₹600 recharge will be credited as ₹1200).</li>
-                <li>Please double-check the merchant UPI ID and payment amount before finalizing the transaction.</li>
-                <li>Ensure you upload the correct payment receipt screenshot and enter the exact 12-digit UTR/Transaction Ref number.</li>
-              </ul>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  "Send the payment to the UPI ID shown below.",
+                  "Pay the exact amount displayed on this page.",
+                  "After the payment is successful, copy the UTR/Transaction ID from your UPI app.",
+                  "Enter the UTR/Transaction ID in the payment form.",
+                  "(Optional) Upload a screenshot of the successful payment.",
+                  "Click Submit.",
+                  "Your payment will be verified by our team. Once verified, the balance will be credited to your wallet."
+                ].map((text, idx) => (
+                  <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                    <span style={{ 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      background: '#16a34a', 
+                      color: 'white', 
+                      borderRadius: '50%', 
+                      width: '18px', 
+                      height: '18px', 
+                      fontSize: '10.5px', 
+                      fontWeight: 800,
+                      flexShrink: 0,
+                      marginTop: '2px'
+                    }}>
+                      {idx + 1}
+                    </span>
+                    <span style={{ fontSize: '12px', color: '#475569', lineHeight: 1.5, fontWeight: 500 }}>
+                      {text}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
