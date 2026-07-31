@@ -72,6 +72,13 @@ const ButtonSpecificIcon = ({ name = '', size = 20, color = '#15803d', style = {
   };
 
   switch (normName) {
+    case 'telegram':
+      return (
+        <svg {...iconProps}>
+          <line x1="22" y1="2" x2="11" y2="13" />
+          <polygon points="22 2 15 22 11 13 2 9 22 2" />
+        </svg>
+      );
     case 'home':
     case 'app':
       return (
@@ -2012,7 +2019,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
               rel="noreferrer" 
               style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '13px' }}
             >
-              <span>✈️</span> Telegram Channel
+              <ButtonSpecificIcon name="telegram" size={16} color="#0369a1" /> Telegram Channel
             </a>
             <a 
               href="https://t.me/Growmoreagent" 
@@ -2020,7 +2027,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
               rel="noreferrer" 
               style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '13px' }}
             >
-              <span>✈️</span> Telegram Agent
+              <ButtonSpecificIcon name="telegram" size={16} color="#0369a1" /> Telegram Agent
             </a>
           </div>
         </div>
@@ -3081,7 +3088,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                   rel="noreferrer" 
                   style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '14px' }}
                 >
-                  <span>✈️</span> Telegram Support Channel
+                  <ButtonSpecificIcon name="telegram" size={18} color="#0369a1" /> Telegram Support Channel
                 </a>
                 <a 
                   href="https://t.me/Growmoreagent" 
@@ -3089,7 +3096,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                   rel="noreferrer" 
                   style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', background: '#e0f2fe', borderRadius: '12px', textDecoration: 'none', color: '#0369a1', fontWeight: 700, fontSize: '14px' }}
                 >
-                  <span>✈️</span> Telegram Agent
+                  <ButtonSpecificIcon name="telegram" size={18} color="#0369a1" /> Telegram Agent
                 </a>
               </div>
             )}
