@@ -77,7 +77,7 @@ const AboutPage = () => {
           <span className="step-badge">Daily Income Claim</span>
           <h4 style={{ margin: '0 0 6px 0', fontSize: '15px', fontWeight: 800, color: '#1e293b' }}>2. Making Daily Yield Claims</h4>
           <p style={{ margin: 0, fontSize: '12.5px', color: '#475569', lineHeight: 1.6 }}>
-            You must log in to the GrowMore dashboard every day to claim your product yield. Remember: <strong>unclaimed days are skipped and marked as missed (₹0.00)</strong>, so make sure to claim your daily rewards on time!
+            You must log in to the GrowMore dashboard every day to claim your product yield. Remember: <strong>unclaimed days are skipped and marked as missed ($0.00)</strong>, so make sure to claim your daily rewards on time!
           </p>
         </div>
 
@@ -86,7 +86,7 @@ const AboutPage = () => {
           <span className="step-badge">Milestone Tasks</span>
           <h4 style={{ margin: '0 0 6px 0', fontSize: '15px', fontWeight: 800, color: '#1e293b' }}>3. Inviting Active Referrals</h4>
           <p style={{ margin: 0, fontSize: '12.5px', color: '#475569', lineHeight: 1.6 }}>
-            Visit the <strong>Task</strong> page to check milestone rewards. When your invitees register using your link and purchase at least one active product, they become an Active Member. Reach referral milestones to unlock cash rewards (up to ₹12,000)!
+            Visit the <strong>Task</strong> page to check milestone rewards. When your invitees register using your link and purchase at least one active product, they become an Active Member. Reach referral milestones to unlock cash rewards (up to $12,000)!
           </p>
         </div>
 

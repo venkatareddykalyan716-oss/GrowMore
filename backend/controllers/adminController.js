@@ -419,7 +419,7 @@ const adjustReferralCommission = async (req, res) => {
       io.to(user._id.toString()).emit('commission_update', {
         type: 'commission',
         title: adjustAmount > 0 ? '🎁 Admin Bonus Credited' : '💸 Admin Debit Processed',
-        message: description || `Admin has adjusted your balance by ${adjustAmount > 0 ? '+' : ''}₹${adjustAmount}.`,
+        message: description || `Admin has adjusted your balance by ${adjustAmount > 0 ? '+' : ''}$${adjustAmount}.`,
         newBalance: user.availableBalance
       });
     }

@@ -129,7 +129,7 @@ const seedPlans = async () => {
     await Plan.insertMany(plans);
     console.log(`\n✅ ${plans.length} plans seeded successfully!\n`);
     plans.forEach(p => {
-      console.log(`  📦 ${p.image} ${p.name} - ₹${p.price} (${p.dailyIncome}/day for ${p.duration} days) - ${p.growthLevel}`);
+      console.log(`  📦 ${p.image} ${p.name} - $${p.price} (${p.dailyIncome}/day for ${p.duration} days) - ${p.growthLevel}`);
     });
     
     process.exit(0);

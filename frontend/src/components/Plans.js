@@ -306,13 +306,13 @@ const Plans = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
                     <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px' }}>⏱️ {plan.duration} Days</span>
                     <span style={{ color: '#cbd5e1' }}>|</span>
-                    <span style={{ color: '#16a34a', fontWeight: 700 }}>₹{plan.price}</span>
+                    <span style={{ color: '#16a34a', fontWeight: 700 }}>${plan.price}</span>
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11.5px', color: '#64748b' }}>
-                    <span>Daily: <strong style={{ color: '#16a34a' }}>₹{plan.dailyIncome}</strong></span>
+                    <span>Daily: <strong style={{ color: '#16a34a' }}>${plan.dailyIncome}</strong></span>
                     <span style={{ color: '#cbd5e1' }}>|</span>
-                    <span>Total: <strong style={{ color: '#1e293b' }}>₹{(plan.dailyIncome * plan.duration).toFixed(0)}</strong></span>
+                    <span>Total: <strong style={{ color: '#1e293b' }}>${(plan.dailyIncome * plan.duration).toFixed(0)}</strong></span>
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '6px' }}>

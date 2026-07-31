@@ -788,12 +788,12 @@ const Dashboard = () => {
           <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '20px', textAlign: 'center', borderLeft: '4px solid #f59e0b' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>💰</div>
             <h4 style={{ color: '#6b7280', fontSize: '13px', marginBottom: '6px' }}>Total Earnings</h4>
-            <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>₹ {stats.totalEarnings || 0}</p>
+            <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>$ {stats.totalEarnings || 0}</p>
           </div>
           <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '20px', textAlign: 'center', borderLeft: '4px solid #16a34a' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}>💵</div>
             <h4 style={{ color: '#6b7280', fontSize: '13px', marginBottom: '6px' }}>Balance</h4>
-            <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>₹ {stats.availableBalance || 0}</p>
+            <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>$ {stats.availableBalance || 0}</p>
           </div>
           <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '20px', textAlign: 'center', borderLeft: '4px solid #3b82f6' }}>
             <div style={{ fontSize: '32px', marginBottom: '8px' }}></div>
@@ -1295,19 +1295,19 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Today New</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '16px', color: '#1e293b', fontWeight: 800 }}>₹{teamStats?.todayTeamInvestment || 0}</strong>
+                <strong style={{ display: 'block', fontSize: '16px', color: '#1e293b', fontWeight: 800 }}>${teamStats?.todayTeamInvestment || 0}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Today Invest</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '16px', color: '#1e293b', fontWeight: 800 }}>₹{teamStats?.totalTeamInvestment || 0}</strong>
+                <strong style={{ display: 'block', fontSize: '16px', color: '#1e293b', fontWeight: 800 }}>${teamStats?.totalTeamInvestment || 0}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Total Invest</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '16px', color: '#16a34a', fontWeight: 800 }}>₹{(teamStats?.todayReferralIncome || 0).toFixed(2)}</strong>
+                <strong style={{ display: 'block', fontSize: '16px', color: '#16a34a', fontWeight: 800 }}>${(teamStats?.todayReferralIncome || 0).toFixed(2)}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Today Bonus</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '16px', color: '#16a34a', fontWeight: 800 }}>₹{(teamStats?.totalReferralIncome || 0).toFixed(2)}</strong>
+                <strong style={{ display: 'block', fontSize: '16px', color: '#16a34a', fontWeight: 800 }}>${(teamStats?.totalReferralIncome || 0).toFixed(2)}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Total Bonus</span>
               </div>
 
@@ -1541,7 +1541,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
 
                         {/* Simplified metrics */}
                         <div style={{ fontSize: '12px', color: '#475569', borderTop: '1px solid #f1f5f9', paddingTop: '8px' }}>
-                          <span>Invested: <strong style={{ color: '#1e293b' }}>₹{ref.currentInvestment}</strong></span>
+                          <span>Invested: <strong style={{ color: '#1e293b' }}>${ref.currentInvestment}</strong></span>
                         </div>
                       </div>
                     ))}
@@ -1659,19 +1659,19 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                       }}>
                         <div>
                           <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Wallet Balance</span>
-                          <strong style={{ fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>₹{selectedMember.walletBalance || 0}</strong>
+                          <strong style={{ fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>${selectedMember.walletBalance || 0}</strong>
                         </div>
                         <div>
                           <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Total Investment</span>
-                          <strong style={{ fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>₹{selectedMember.currentInvestment || 0}</strong>
+                          <strong style={{ fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>${selectedMember.currentInvestment || 0}</strong>
                         </div>
                         <div>
                           <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Daily Income</span>
-                          <strong style={{ fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>₹{selectedMember.dailyIncome || 0}</strong>
+                          <strong style={{ fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>${selectedMember.dailyIncome || 0}</strong>
                         </div>
                         <div>
                           <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Referral Earnings</span>
-                          <strong style={{ fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>₹{(selectedMember.totalIncome || 0).toFixed(2)}</strong>
+                          <strong style={{ fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>${(selectedMember.totalIncome || 0).toFixed(2)}</strong>
                         </div>
                       </div>
 
@@ -1712,7 +1712,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                             }}>
                               <div>
                                 <strong style={{ fontSize: '12px', color: '#1e293b', display: 'block' }}>{plan.name}</strong>
-                                <span style={{ fontSize: '10px', color: '#64748b' }}>Amount: ₹{plan.amount} • {plan.duration}d</span>
+                                <span style={{ fontSize: '10px', color: '#64748b' }}>Amount: ${plan.amount} • {plan.duration}d</span>
                               </div>
                               <div style={{ textAlign: 'right' }}>
                                 <span style={{
@@ -1728,7 +1728,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                                 }}>
                                   {plan.isActive ? 'Active' : 'Expired'}
                                 </span>
-                                <span style={{ display: 'block', fontSize: '10px', color: '#16a34a', fontWeight: 700 }}>+₹{plan.dailyIncome}/d</span>
+                                <span style={{ display: 'block', fontSize: '10px', color: '#16a34a', fontWeight: 700 }}>+${plan.dailyIncome}/d</span>
                               </div>
                             </div>
                           ))}
@@ -1759,11 +1759,11 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                       <div key={idx} style={{ padding: '12px 14px', background: '#f8fafc', borderRadius: '14px', border: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
                           <strong style={{ fontSize: '13px', color: '#1e293b', display: 'block' }}>{item.referralName} (Lvl {item.commissionLevel})</strong>
-                          <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginTop: '2px' }}>Claimed: {item.investmentPlan} (Daily: ₹{item.dailyIncome || 0})</span>
+                          <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginTop: '2px' }}>Claimed: {item.investmentPlan} (Daily: ${item.dailyIncome || 0})</span>
                           <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginTop: '2px' }}>{new Date(item.date).toLocaleString()}</span>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <strong style={{ fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>+₹{item.commissionEarned}</strong>
+                          <strong style={{ fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>+${item.commissionEarned}</strong>
                           <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8', marginTop: '2px' }}>{item.commissionPercent}% share</span>
                         </div>
                       </div>
@@ -1858,15 +1858,15 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
             {/* Sub-Metrics Grid */}
             <div className="stats-grid" style={{ marginBottom: '20px' }}>
               <div>
-                <strong style={{ display: 'block', fontSize: '15px', color: '#1e293b', fontWeight: 800 }}>₹{stats.totalRecharge?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '15px', color: '#1e293b', fontWeight: 800 }}>${stats.totalRecharge?.toFixed(2) || '0.00'}</strong>
                 <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>Recharge wallet</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '15px', color: '#1e293b', fontWeight: 800 }}>₹{stats.availableBalance?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '15px', color: '#1e293b', fontWeight: 800 }}>${stats.availableBalance?.toFixed(2) || '0.00'}</strong>
                 <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>Balance wallet</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '15px', color: '#16a34a', fontWeight: 800 }}>₹{stats.totalEarnings?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '15px', color: '#16a34a', fontWeight: 800 }}>${stats.totalEarnings?.toFixed(2) || '0.00'}</strong>
                 <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>Total assets</span>
               </div>
             </div>
@@ -1928,27 +1928,27 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
           }}>
             <div className="stats-grid">
               <div>
-                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>₹{stats.totalRecharge?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>${stats.totalRecharge?.toFixed(2) || '0.00'}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Total recharge</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>₹{stats.totalWithdrawals?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>${stats.totalWithdrawals?.toFixed(2) || '0.00'}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Total withdraw</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>₹{stats.totalEarnings?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>${stats.totalEarnings?.toFixed(2) || '0.00'}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Total assets</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>₹{(stats.todayIncome || 0).toFixed(2)}</strong>
+                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>${(stats.todayIncome || 0).toFixed(2)}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Today's income</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>₹{(stats.teamIncome || 0).toFixed(2)}</strong>
+                <strong style={{ display: 'block', fontSize: '14px', color: '#1e293b', fontWeight: 800 }}>${(stats.teamIncome || 0).toFixed(2)}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Team income</span>
               </div>
               <div>
-                <strong style={{ display: 'block', fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>₹{stats.totalEarnings?.toFixed(2) || '0.00'}</strong>
+                <strong style={{ display: 'block', fontSize: '14px', color: '#16a34a', fontWeight: 800 }}>${stats.totalEarnings?.toFixed(2) || '0.00'}</strong>
                 <span style={{ display: 'block', fontSize: '9px', color: '#64748b', fontWeight: 600, marginTop: '2px' }}>Total income</span>
               </div>
             </div>
@@ -2040,8 +2040,8 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                 <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: '#f8fafc', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
                   <div>
                     <h4 style={{ margin: '0 0 4px', fontSize: '14px', color: '#1e293b', fontWeight: 700 }}>{inv.planName || 'Investment Plan'}</h4>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Invested: <strong style={{ color: '#1e293b' }}>₹{inv.amount || 0}</strong></p>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Daily income: <strong style={{ color: '#16a34a' }}>₹{inv.dailyIncome || 0}</strong></p>
+                    <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Invested: <strong style={{ color: '#1e293b' }}>${inv.amount || 0}</strong></p>
+                    <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Daily income: <strong style={{ color: '#16a34a' }}>${inv.dailyIncome || 0}</strong></p>
                   </div>
                   <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
                     <span style={{ fontSize: '10px', background: '#d1fae5', color: '#065f46', padding: '4px 10px', borderRadius: '12px', fontWeight: 800 }}>ACTIVE</span>
@@ -2105,7 +2105,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                     <span style={{ fontSize: '11px', color: '#94a3b8' }}>{new Date(tx.createdAt).toLocaleString()}</span>
                   </div>
                   <strong style={{ fontSize: '14px', fontWeight: 800, color: (tx.type === 'withdrawal' || tx.type === 'invest') ? '#ef4444' : '#16a34a' }}>
-                    {(tx.type === 'withdrawal' || tx.type === 'invest') ? '-' : '+'}₹{tx.amount}
+                    {(tx.type === 'withdrawal' || tx.type === 'invest') ? '-' : '+'}${tx.amount}
                   </strong>
                 </div>
               ))}
@@ -2139,7 +2139,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
               {recentTransactions.filter(tx => tx.type === 'recharge').map((tx, idx) => (
                 <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #f1f5f9' }}>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '13px', color: '#1e293b' }}>₹{tx.amount.toFixed(2)}</strong>
+                    <strong style={{ display: 'block', fontSize: '13px', color: '#1e293b' }}>${tx.amount.toFixed(2)}</strong>
                     <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginTop: '2px', wordBreak: 'break-all' }}>Recharge ID: {tx._id}</span>
                     <span style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginTop: '2px', wordBreak: 'break-all' }}>Ref: {tx.reference || 'N/A'}</span>
                     <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginTop: '2px' }}>{new Date(tx.createdAt).toLocaleString()}</span>
@@ -2187,7 +2187,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
               {recentTransactions.filter(tx => tx.type === 'withdrawal' && !tx.description?.toLowerCase().includes('investment')).map((tx, idx) => (
                 <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #f1f5f9' }}>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '13px', color: '#1e293b' }}>₹{tx.amount.toFixed(2)}</strong>
+                    <strong style={{ display: 'block', fontSize: '13px', color: '#1e293b' }}>${tx.amount.toFixed(2)}</strong>
                     <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginTop: '2px', wordBreak: 'break-all' }}>Withdrawal ID: {tx._id}</span>
                     <span style={{ fontSize: '11px', color: '#64748b', display: 'block', marginTop: '2px', wordBreak: 'break-all' }}>{tx.description || 'Withdrawal'}</span>
                     <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginTop: '2px' }}>{new Date(tx.createdAt).toLocaleString()}</span>
@@ -2324,7 +2324,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
             <div style={{ background: 'white', borderRadius: '18px', padding: '16px', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: '1px solid #f1f5f9', textAlign: 'center' }}>
               <span style={{ fontSize: '22px', display: 'block', marginBottom: '4px' }}>🪙</span>
               <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, display: 'block', textTransform: 'uppercase' }}>Total Earned</span>
-              <strong style={{ fontSize: '18px', color: '#16a34a', marginTop: '2px', display: 'block' }}>₹{totalEarnedRewards}</strong>
+              <strong style={{ fontSize: '18px', color: '#16a34a', marginTop: '2px', display: 'block' }}>${totalEarnedRewards}</strong>
             </div>
           </div>
 
@@ -2376,7 +2376,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <span style={{ fontSize: '11px', color: '#94a3b8', display: 'block' }}>Reward</span>
-                        <strong style={{ fontSize: '14px', color: '#16a34a', display: 'block', marginTop: '1px' }}>₹{t.reward}</strong>
+                        <strong style={{ fontSize: '14px', color: '#16a34a', display: 'block', marginTop: '1px' }}>${t.reward}</strong>
                       </div>
                     </div>
 
@@ -2441,7 +2441,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                 <span style={{ fontSize: '64px', display: 'block', marginBottom: '16px', animation: 'bounce 1s infinite' }}>🎉</span>
                 <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#064e3b', margin: '0 0 8px 0' }}>Reward Claimed!</h3>
                 <p style={{ fontSize: '13px', color: '#64748b', margin: '0 0 20px 0', lineHeight: 1.5 }}>
-                  Congratulations! <strong>₹{claimedRewardAmount}</strong> bonus reward has been successfully added to your wallet balance.
+                  Congratulations! <strong>${claimedRewardAmount}</strong> bonus reward has been successfully added to your wallet balance.
                 </p>
                 <button 
                   onClick={() => setShowConfetti(false)}
@@ -2515,13 +2515,13 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
                       <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '4px' }}>⏱️ {plan.duration} Days</span>
                       <span style={{ color: '#cbd5e1' }}>|</span>
-                      <span style={{ color: '#16a34a', fontWeight: 700 }}>₹{plan.price}</span>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>${plan.price}</span>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11.5px', color: '#64748b' }}>
-                      <span>Daily: <strong style={{ color: '#16a34a' }}>₹{plan.dailyIncome}</strong></span>
+                      <span>Daily: <strong style={{ color: '#16a34a' }}>${plan.dailyIncome}</strong></span>
                       <span style={{ color: '#cbd5e1' }}>|</span>
-                      <span>Total: <strong style={{ color: '#1e293b' }}>₹{(plan.dailyIncome * plan.duration).toFixed(0)}</strong></span>
+                      <span>Total: <strong style={{ color: '#1e293b' }}>${(plan.dailyIncome * plan.duration).toFixed(0)}</strong></span>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '6px' }}>
@@ -2947,12 +2947,12 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
                           <span style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '10px' }}>
-                            Daily ₹{p.dailyIncome?.toFixed(2)}
+                            Daily ${p.dailyIncome?.toFixed(2)}
                           </span>
-                          <strong style={{ fontSize: '15px', color: '#ffffff' }}>₹{p.price}</strong>
+                          <strong style={{ fontSize: '15px', color: '#ffffff' }}>${p.price}</strong>
                         </div>
                         <span style={{ fontSize: '11px', color: '#22c55e', fontWeight: 600, display: 'block', marginTop: '4px' }}>
-                          Total Return: ₹{(p.dailyIncome * p.duration).toFixed(2)}
+                          Total Return: ${(p.dailyIncome * p.duration).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -3095,7 +3095,7 @@ const MobileDashboard = ({ requests = [], setRequests }) => {
                   <strong style={{ fontSize: '12px', color: '#0f172a', display: 'block', marginBottom: '6px' }}>💡 How to Get Started:</strong>
                   <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '11px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <li><strong>Purchase Products:</strong> Visit the Product tab to buy yield-generating assets that credit daily rewards to your wallet.</li>
-                    <li><strong>Daily Income Claim:</strong> Log in every day to claim your product yield from the Dashboard. Missed claims default to ₹0.</li>
+                    <li><strong>Daily Income Claim:</strong> Log in every day to claim your product yield from the Dashboard. Missed claims default to $0.</li>
                     <li><strong>Milestone Tasks:</strong> Invite active members using your referral code to unlock milestone cash rewards.</li>
                     <li><strong>Recharge:</strong> Top up your wallet using instant deep-linked UPI payments. Proofs are validated securely within 6 hours.</li>
                     <li><strong>Withdrawals:</strong> Withdraw your earnings directly to your saved bank account quickly and securely.</li>
@@ -3182,7 +3182,7 @@ const LiveRedemptionRecords = () => {
           <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #f1f5f9', animation: idx === 0 ? 'slideIn 0.3s ease-out' : 'none' }}>
             <span style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{item.phone}</span>
             <span style={{ fontSize: '11px', background: '#f0fdf4', color: '#16a34a', padding: '4px 10px', borderRadius: '12px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-              +₹{item.amount}
+              +${item.amount}
             </span>
           </div>
         ))}
@@ -3284,7 +3284,7 @@ const TreeVisualizer = ({ teamList, userId }) => {
                   {item.status}
                 </span>
                 <span style={{ display: 'block', fontSize: '11px', color: '#16a34a', fontWeight: 700, marginTop: '4px' }}>
-                  +₹{item.totalIncome} Earned
+                  +${item.totalIncome} Earned
                 </span>
               </div>
             </div>

@@ -86,7 +86,7 @@ const WithdrawHistory = () => {
               >
                 <div>
                   <strong style={{ display: 'block', fontSize: '16px', color: '#1e293b' }}>
-                    ₹{tx.amount.toFixed(2)}
+                    ${tx.amount.toFixed(2)}
                   </strong>
                   <span style={{ fontSize: '12px', color: '#64748b', display: 'block', marginTop: '4px', wordBreak: 'break-all' }}>
                     {tx.description || 'Withdrawal request'}

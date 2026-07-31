@@ -273,7 +273,7 @@ const redeemGiftCode = async (req, res) => {
     // 8. Process rewards
     const rewardType = giftCode.rewardType;
     const rewardVal = giftCode.rewardAmount;
-    let rewardLabel = `₹${rewardVal} Cash`;
+    let rewardLabel = `$${rewardVal} Cash`;
 
     if (rewardType === 'wallet_balance' || rewardType === 'bonus_wallet' || rewardType === 'cashback' || rewardType === 'investment_credit') {
       user.availableBalance += rewardVal;
@@ -288,7 +288,7 @@ const redeemGiftCode = async (req, res) => {
         status: 'completed',
         reference: `GIFT-${giftCode.code}-${Date.now()}`
       });
-      rewardLabel = `₹${rewardVal} Balance`;
+      rewardLabel = `$${rewardVal} Balance`;
 
     } else if (rewardType === 'vip_upgrade') {
       user.level = (user.level || 0) + Number(rewardVal);

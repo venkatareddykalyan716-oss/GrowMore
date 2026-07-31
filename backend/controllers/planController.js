@@ -344,7 +344,7 @@ const executeClaim = async (req, res, session) => {
           // Real-Time Socket.io emit
           const io = req.app.get('io');
           if (io) {
-            const notificationMessage = `🎉 Referral Bonus Credited!\n\nYour team member claimed today's income.\nCommission Earned: ₹${commissionAmount}\n\nWallet Updated Successfully.`;
+            const notificationMessage = `🎉 Referral Bonus Credited!\n\nYour team member claimed today's income.\nCommission Earned: $${commissionAmount}\n\nWallet Updated Successfully.`;
             io.to(parentUser._id.toString()).emit('commission_update', {
               type: 'commission',
               title: '🎉 Referral Bonus Credited!',
@@ -366,7 +366,7 @@ const executeClaim = async (req, res, session) => {
     statusCode: 200,
     data: {
       success: true,
-      message: `Claimed ₹${rewardAmount} daily income from ${plan.name}!`,
+      message: `Claimed $${rewardAmount} daily income from ${plan.name}!`,
       reward: rewardAmount,
       newBalance: user.availableBalance
     }

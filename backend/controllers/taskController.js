@@ -158,14 +158,14 @@ const claimTaskReward = async (req, res) => {
       io.to(userId.toString()).emit('commission_update', {
         type: 'bonus',
         title: '🎉 Milestone Reward Claimed!',
-        message: `Congratulations! You received ₹${task.reward} for completing "${task.taskTitle}"!`,
+        message: `Congratulations! You received $${task.reward} for completing "${task.taskTitle}"!`,
         newBalance: user.availableBalance
       });
     }
     
     res.json({
       success: true,
-      message: `Successfully claimed ₹${task.reward}!`,
+      message: `Successfully claimed $${task.reward}!`,
       newBalance: user.availableBalance
     });
   } catch (error) {
