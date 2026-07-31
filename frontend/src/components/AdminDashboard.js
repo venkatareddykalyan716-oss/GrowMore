@@ -2181,27 +2181,22 @@ const AdminDashboard = () => {
                   }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <span style={{ fontSize: '14px', fontWeight: 700 }}>User Phone: {tx.user?.phone || '—'}</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span style={{ fontSize: '12px', color: '#94a3b8' }}>Ref (UTR): {tx.reference}</span>
-                        <button
+                        <span
                           onClick={() => handleCopyUtr(tx.reference, tx._id)}
                           style={{
-                            background: copiedTxId === tx._id ? '#16a34a' : 'rgba(255, 255, 255, 0.08)',
-                            color: copiedTxId === tx._id ? 'white' : '#94a3b8',
-                            border: 'none',
-                            borderRadius: '6px',
-                            padding: '3px 8px',
-                            fontSize: '10px',
-                            fontWeight: 700,
                             cursor: 'pointer',
-                            transition: 'all 0.2s ease',
+                            fontSize: '13px',
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '4px'
+                            color: copiedTxId === tx._id ? '#16a34a' : '#94a3b8',
+                            transition: 'color 0.2s'
                           }}
+                          title="Copy UTR"
                         >
-                          {copiedTxId === tx._id ? '✅ Copied' : '📋 Copy'}
-                        </button>
+                          {copiedTxId === tx._id ? '✅' : '📋'}
+                        </span>
                       </div>
                       <span style={{ fontSize: '11px', color: '#94a3b8' }}>Submitted: {new Date(tx.createdAt).toLocaleString()}</span>
                       {tx.proofImage && (
