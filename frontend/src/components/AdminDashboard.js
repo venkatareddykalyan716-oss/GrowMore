@@ -1125,6 +1125,23 @@ const AdminDashboard = () => {
     setTimeout(() => setCopiedTxId(''), 1500);
   };
 
+  const getUpiAppDetails = (description = '') => {
+    const desc = description.toLowerCase();
+    if (desc.includes('phonepe')) {
+      return { name: 'PhonePe', icon: 'https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/phonepe.png' };
+    }
+    if (desc.includes('gpay') || desc.includes('googlepay')) {
+      return { name: 'GPay', icon: 'https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/gpay.png' };
+    }
+    if (desc.includes('paytm')) {
+      return { name: 'Paytm', icon: 'https://cashfreelogo.cashfree.com/assets_images/pg/upi/32/paytm.png' };
+    }
+    if (desc.includes('other')) {
+      return { name: 'Other UPI', icon: 'https://download.logo.wine/logo/Unified_Payments_Interface/Unified_Payments_Interface-Logo.wine.png' };
+    }
+    return null;
+  };
+
   const handleProcessTx = async (transactionId, status) => {
     try {
       const token = sessionStorage.getItem('gm_token');
@@ -2199,6 +2216,16 @@ const AdminDashboard = () => {
                         </span>
                       </div>
                       <span style={{ fontSize: '11px', color: '#94a3b8' }}>Submitted: {new Date(tx.createdAt).toLocaleString()}</span>
+                      {(() => {
+                        const app = getUpiAppDetails(tx.description);
+                        if (!app) return null;
+                        return (
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: darkMode ? 'rgba(255,255,255,0.05)' : '#f1f5f9', padding: '4px 8px', borderRadius: '8px', width: 'fit-content', marginTop: '4px' }}>
+                            <img src={app.icon} alt={app.name} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                            <span style={{ fontSize: '11px', fontWeight: 700, color: darkMode ? '#cbd5e1' : '#475569' }}>Paid via {app.name}</span>
+                          </div>
+                        );
+                      })()}
                       {tx.proofImage && (
                         <span 
                           onClick={() => setPreviewScreenshot(tx.proofImage)}
