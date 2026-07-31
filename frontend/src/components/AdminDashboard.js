@@ -953,10 +953,26 @@ const ReferralConfigPanel = ({ darkMode, users }) => {
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [tick, setTick] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   useEffect(() => {
     const timer = setInterval(() => setTick(t => t + 1), 1000);
     return () => clearInterval(timer);
   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [users, setUsers] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [plans, setPlans] = useState([]);
@@ -1713,18 +1729,41 @@ const AdminDashboard = () => {
         .widget-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(22, 163, 74, 0.1) !important; }
       `}</style>
 
+      {/* Mobile Sidebar Backdrop Overlay */}
+      {isMobile && sidebarOpen && (
+        <div 
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 999
+          }}
+        />
+      )}
+
       {/* ─── Sidebar Menu ─── */}
       <aside style={{
-        width: sidebarOpen ? '280px' : '0px',
+        width: isMobile ? '280px' : (sidebarOpen ? '280px' : '0px'),
+        position: isMobile ? 'fixed' : 'relative',
+        left: isMobile ? (sidebarOpen ? '0px' : '-280px') : '0px',
+        top: 0,
+        bottom: 0,
+        height: '100vh',
         flexShrink: 0,
         overflow: 'hidden',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        background: darkMode ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-        borderRight: sidebarOpen ? `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` : 'none',
+        background: darkMode ? '#0f172a' : '#ffffff',
+        borderRight: (!isMobile && sidebarOpen) || isMobile ? `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` : 'none',
         backdropFilter: 'blur(20px)',
         display: 'flex',
         flexDirection: 'column',
-        zIndex: 10
+        boxShadow: isMobile && sidebarOpen ? '0 0 30px rgba(0,0,0,0.3)' : 'none',
+        zIndex: 1000
       }}>
         <div style={{ width: '280px', display: 'flex', flexDirection: 'column', height: '100%', flexShrink: 0 }}>
           {/* Sidebar Header */}
@@ -1835,44 +1874,103 @@ const AdminDashboard = () => {
         
         {/* ─── Header ─── */}
         <header style={{
-          height: '75px',
+          minHeight: '75px',
           background: darkMode ? 'rgba(15, 23, 42, 0.8)' : 'rgba(255, 255, 255, 0.8)',
           borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
           backdropFilter: 'blur(20px)',
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'stretch' : 'center',
           justifyContent: 'space-between',
-          padding: '0 32px',
+          padding: isMobile ? '12px 16px' : '0 32px',
+          gap: isMobile ? '12px' : '20px',
           position: 'sticky',
           top: 0,
           zIndex: 5
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            {!sidebarOpen && (
-              <button
-                onClick={() => setSidebarOpen(true)}
+          {/* Top Row: Menu Button, Mobile Title, Theme Switcher / Notifications */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              {!sidebarOpen && (
+                <button
+                  onClick={() => setSidebarOpen(true)}
+                  style={{
+                    background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '10px',
+                    padding: '8px 14px',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                    fontSize: '13px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 4px 10px rgba(22, 163, 74, 0.3)',
+                    transition: 'all 0.2s ease'
+                  }}
+                  title="Open Sidebar"
+                >
+                  ☰ Menu
+                </button>
+              )}
+              {isMobile && (
+                <span style={{ fontSize: '16px', fontWeight: 800, background: 'linear-gradient(135deg, #16a34a, #fbbf24)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>GrowMore Admin</span>
+              )}
+            </div>
+
+            {/* Right side options */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              {/* Dark/Light mode toggle */}
+              <button 
+                onClick={() => setDarkMode(!darkMode)}
                 style={{
-                  background: 'linear-gradient(135deg, #16a34a, #15803d)',
-                  color: 'white',
+                  background: 'transparent',
                   border: 'none',
-                  borderRadius: '10px',
-                  padding: '8px 14px',
+                  fontSize: '18px',
                   cursor: 'pointer',
-                  fontWeight: 700,
-                  fontSize: '13px',
+                  padding: '8px',
+                  borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  boxShadow: '0 4px 10px rgba(22, 163, 74, 0.3)',
-                  transition: 'all 0.2s ease'
+                  justifyContent: 'center',
+                  transition: 'background 0.2s',
+                  color: 'inherit'
                 }}
-                title="Open Sidebar"
+                onMouseOver={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
+                onMouseOut={(e) => e.target.style.background = 'transparent'}
               >
-                ☰ Menu
+                {darkMode ? '☀️' : '🌙'}
               </button>
-            )}
-            {/* Search bar */}
-            <div style={{ position: 'relative', width: '300px' }}>
+
+              {/* Notifications */}
+              <div style={{ position: 'relative', cursor: 'pointer' }}>
+                <span style={{ fontSize: '18px' }}>🔔</span>
+                {(pendingDeposits.length + pendingWithdrawals.length) > 0 && (
+                  <span style={{ position: 'absolute', top: '-4px', right: '-4px', background: '#ef4444', color: 'white', fontSize: '9px', fontWeight: 900, borderRadius: '50%', padding: '2px 5px', minWidth: '16px', textAlign: 'center' }}>
+                    {pendingDeposits.length + pendingWithdrawals.length}
+                  </span>
+                )}
+              </div>
+
+              {/* Profile - desktop only */}
+              {!isMobile && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderLeft: `1px solid ${darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, paddingLeft: '14px' }}>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #16a34a, #fbbf24)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 800, fontSize: '13px' }}>
+                    A
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'inherit' }}>Super Admin</span>
+                    <span style={{ fontSize: '9px', color: '#16a34a', fontWeight: 700 }}>Online</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Search bar row */}
+          {(!isMobile || activeTab === 'users' || activeTab === 'plans' || activeTab === 'investments' || activeTab === 'dashboard') && (
+            <div style={{ position: 'relative', width: isMobile ? '100%' : '300px' }}>
               <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}>🔍</span>
               <input 
                 type="text" 
@@ -1907,56 +2005,11 @@ const AdminDashboard = () => {
                 }}
               />
             </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            {/* Dark/Light mode toggle */}
-            <button 
-              onClick={() => setDarkMode(!darkMode)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                fontSize: '18px',
-                cursor: 'pointer',
-                padding: '8px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'background 0.2s',
-                color: 'inherit'
-              }}
-              onMouseOver={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
-              onMouseOut={(e) => e.target.style.background = 'transparent'}
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-
-            {/* Notifications */}
-            <div style={{ position: 'relative', cursor: 'pointer' }}>
-              <span style={{ fontSize: '18px' }}>🔔</span>
-              {(pendingDeposits.length + pendingWithdrawals.length) > 0 && (
-                <span style={{ position: 'absolute', top: '-4px', right: '-4px', background: '#ef4444', color: 'white', fontSize: '9px', fontWeight: 900, borderRadius: '50%', padding: '2px 5px', minWidth: '16px', textAlign: 'center' }}>
-                  {pendingDeposits.length + pendingWithdrawals.length}
-                </span>
-              )}
-            </div>
-
-            {/* Admin Profile */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderLeft: `1px solid ${darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, paddingLeft: '14px' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #16a34a, #fbbf24)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 800, fontSize: '13px' }}>
-                A
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: 'inherit' }}>Super Admin</span>
-                <span style={{ fontSize: '9px', color: '#16a34a', fontWeight: 700 }}>Online</span>
-              </div>
-            </div>
-          </div>
+          )}
         </header>
 
         {/* ─── Main Content Area ─── */}
-        <main style={{ flex: 1, padding: '36px 40px' }}>
+        <main style={{ flex: 1, padding: isMobile ? '16px 14px' : '36px 40px' }}>
           
           {message && (
             <div style={{
@@ -1983,7 +2036,7 @@ const AdminDashboard = () => {
               <div style={{
                 background: 'linear-gradient(135deg, rgba(22, 163, 74, 0.12) 0%, rgba(15, 23, 42, 0.9) 100%)',
                 borderRadius: '24px',
-                padding: '42px 48px',
+                padding: isMobile ? '24px 20px' : '42px 48px',
                 marginBottom: '36px',
                 border: `1px solid ${darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
                 boxShadow: '0 20px 45px rgba(0,0,0,0.15)',
@@ -2252,16 +2305,18 @@ const AdminDashboard = () => {
                     background: darkMode ? 'rgba(255,255,255,0.03)' : 'white',
                     border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
                     borderRadius: '16px',
-                    padding: '20px 24px',
+                    padding: isMobile ? '16px' : '20px 24px',
                     boxShadow: '0 8px 25px rgba(0,0,0,0.02)',
                     display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: isMobile ? 'stretch' : 'center',
+                    gap: isMobile ? '16px' : '24px'
                   }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <span style={{ fontSize: '14px', fontWeight: 700 }}>User Phone: {tx.user?.phone || '—'}</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '12px', color: '#94a3b8' }}>Ref (UTR): {tx.reference}</span>
+                        <span style={{ fontSize: '12px', color: '#94a3b8', wordBreak: 'break-all' }}>Ref (UTR): {tx.reference}</span>
                         <span
                           onClick={() => handleCopyUtr(tx.reference, tx._id)}
                           style={{
@@ -2298,30 +2353,59 @@ const AdminDashboard = () => {
                       )}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: 800, color: '#16a34a' }}>₹{tx.amount}</span>
-                      <span style={{
-                        padding: '4px 10px',
-                        borderRadius: '20px',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        background: tx.status === 'completed' ? 'rgba(22, 163, 74, 0.12)' : tx.status === 'pending' ? 'rgba(251, 191, 36, 0.12)' : 'rgba(239, 68, 68, 0.12)',
-                        color: tx.status === 'completed' ? '#16a34a' : tx.status === 'pending' ? '#fbbf24' : '#ef4444'
-                      }}>
-                        {tx.status}
-                      </span>
+                    <div style={{ 
+                      display: 'flex', 
+                      flexDirection: isMobile ? 'row-reverse' : 'row',
+                      alignItems: 'center', 
+                      justifyContent: isMobile ? 'space-between' : 'flex-end',
+                      gap: isMobile ? '12px' : '30px',
+                      flexWrap: 'wrap'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: '18px', fontWeight: 800, color: '#16a34a' }}>₹{tx.amount}</span>
+                        <span style={{
+                          padding: '4px 10px',
+                          borderRadius: '20px',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          background: tx.status === 'completed' ? 'rgba(22, 163, 74, 0.12)' : tx.status === 'pending' ? 'rgba(251, 191, 36, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                          color: tx.status === 'completed' ? '#16a34a' : tx.status === 'pending' ? '#fbbf24' : '#ef4444'
+                        }}>
+                          {tx.status}
+                        </span>
+                      </div>
 
                       {tx.status === 'pending' ? (
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: '8px', width: isMobile ? '100%' : 'auto', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
                           <button 
                             onClick={() => handleProcessTx(tx._id, 'completed')}
-                            style={{ background: '#16a34a', color: 'white', border: 'none', borderRadius: '8px', padding: '8px 14px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                            style={{ 
+                              background: '#16a34a', 
+                              color: 'white', 
+                              border: 'none', 
+                              borderRadius: '8px', 
+                              padding: '8px 14px', 
+                              fontSize: '12px', 
+                              fontWeight: 600, 
+                              cursor: 'pointer',
+                              flex: isMobile ? 1 : 'none'
+                            }}
                           >
                             Approve
                           </button>
                           <button 
                             onClick={() => handleProcessTx(tx._id, 'failed')}
-                            style={{ background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', padding: '8px 14px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                            style={{ 
+                              background: 'rgba(239, 68, 68, 0.08)', 
+                              color: '#ef4444', 
+                              border: '1px solid rgba(239, 68, 68, 0.2)', 
+                              borderRadius: '8px', 
+                              padding: '8px 14px', 
+                              fontSize: '12px', 
+                              fontWeight: 600, 
+                              cursor: 'pointer',
+                              flex: isMobile ? 1 : 'none'
+                            }}
                           >
                             Reject
                           </button>
@@ -2365,15 +2449,17 @@ const AdminDashboard = () => {
                     background: darkMode ? 'rgba(255,255,255,0.03)' : 'white',
                     border: `1px solid ${darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
                     borderRadius: '16px',
-                    padding: '20px 24px',
+                    padding: isMobile ? '16px' : '20px 24px',
                     boxShadow: '0 8px 25px rgba(0,0,0,0.02)',
                     display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: isMobile ? 'stretch' : 'center',
+                    gap: isMobile ? '16px' : '24px'
                   }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <span style={{ fontSize: '14px', fontWeight: 700 }}>Customer: {tx.user?.fullName || 'Member'} ({tx.user?.phone || '—'})</span>
-                      <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                      <span style={{ fontSize: '12px', color: '#94a3b8', wordBreak: 'break-all' }}>
                         ID: {(() => {
                           const idStr = tx.reference || tx._id || '';
                           let hash = 0;
@@ -2389,23 +2475,43 @@ const AdminDashboard = () => {
                       )}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-                      <span style={{ fontSize: '18px', fontWeight: 800, color: '#ef4444' }}>₹{tx.amount}</span>
-                      <span style={{
-                        padding: '4px 10px',
-                        borderRadius: '20px',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        background: tx.status === 'completed' ? 'rgba(22, 163, 74, 0.12)' : tx.status === 'pending' ? 'rgba(251, 191, 36, 0.12)' : 'rgba(239, 68, 68, 0.12)',
-                        color: tx.status === 'completed' ? '#16a34a' : tx.status === 'pending' ? '#fbbf24' : '#ef4444'
-                      }}>
-                        {tx.status}
-                      </span>
+                    <div style={{ 
+                      display: 'flex', 
+                      flexDirection: isMobile ? 'row-reverse' : 'row',
+                      alignItems: 'center', 
+                      justifyContent: isMobile ? 'space-between' : 'flex-end',
+                      gap: isMobile ? '12px' : '30px',
+                      flexWrap: 'wrap'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: '18px', fontWeight: 800, color: '#ef4444' }}>₹{tx.amount}</span>
+                        <span style={{
+                          padding: '4px 10px',
+                          borderRadius: '20px',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          background: tx.status === 'completed' ? 'rgba(22, 163, 74, 0.12)' : tx.status === 'pending' ? 'rgba(251, 191, 36, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                          color: tx.status === 'completed' ? '#16a34a' : tx.status === 'pending' ? '#fbbf24' : '#ef4444'
+                        }}>
+                          {tx.status}
+                        </span>
+                      </div>
 
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                      <div style={{ display: 'flex', gap: '8px', width: isMobile ? '100%' : 'auto', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}>
                         <button 
                           onClick={() => handleViewWithdrawDetails(tx._id)}
-                          style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '8px', padding: '8px 14px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                          style={{ 
+                            background: 'rgba(59, 130, 246, 0.1)', 
+                            color: '#3b82f6', 
+                            border: '1px solid rgba(59, 130, 246, 0.2)', 
+                            borderRadius: '8px', 
+                            padding: '8px 14px', 
+                            fontSize: '12px', 
+                            fontWeight: 600, 
+                            cursor: 'pointer',
+                            flex: isMobile ? 1 : 'none',
+                            textAlign: 'center'
+                          }}
                         >
                           👁 View
                         </button>
@@ -2413,13 +2519,33 @@ const AdminDashboard = () => {
                           <>
                             <button 
                               onClick={() => handleApproveFromModal(tx._id)}
-                              style={{ background: '#16a34a', color: 'white', border: 'none', borderRadius: '8px', padding: '8px 14px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                              style={{ 
+                                background: '#16a34a', 
+                                color: 'white', 
+                                border: 'none', 
+                                borderRadius: '8px', 
+                                padding: '8px 14px', 
+                                fontSize: '12px', 
+                                fontWeight: 600, 
+                                cursor: 'pointer',
+                                flex: isMobile ? 1 : 'none'
+                              }}
                             >
                               Approve
                             </button>
                             <button 
                               onClick={() => handleOpenReject(tx._id)}
-                              style={{ background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', padding: '8px 14px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                              style={{ 
+                                background: 'rgba(239, 68, 68, 0.08)', 
+                                color: '#ef4444', 
+                                border: '1px solid rgba(239, 68, 68, 0.2)', 
+                                borderRadius: '8px', 
+                                padding: '8px 14px', 
+                                fontSize: '12px', 
+                                fontWeight: 600, 
+                                cursor: 'pointer',
+                                flex: isMobile ? 1 : 'none'
+                              }}
                             >
                               Reject
                             </button>
