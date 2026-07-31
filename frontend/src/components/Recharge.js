@@ -20,7 +20,7 @@ const Recharge = () => {
   const [transactionId, setTransactionId] = useState('');
   const [screenshotPreview, setScreenshotPreview] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [selectedApp, setSelectedApp] = useState('phonepe');
+  const [selectedApp, setSelectedApp] = useState('');
 
   const quickAmounts = ['600', '1000', '2000', '3500', '9000', '25000', '50000', '70000', '100000'];
   const channels = ['P-Jwpay', 'P-Pay'];
@@ -104,6 +104,11 @@ const Recharge = () => {
 
   const handleSubmitPayment = async (e) => {
     e.preventDefault();
+    if (!selectedApp) {
+      setMessage('❌ Please select the UPI app used to complete the payment');
+      setTimeout(() => setMessage(''), 3000);
+      return;
+    }
     if (!transactionId || transactionId.trim().length < 12) {
       setMessage('❌ Please enter a valid 12-digit UTR/Transaction Ref number');
       setTimeout(() => setMessage(''), 3000);
