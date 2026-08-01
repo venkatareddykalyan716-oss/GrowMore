@@ -430,33 +430,8 @@ const register = async (req, res) => {
       captchaInput 
     } = req.body;
 
-    // ✅ Step 2: Verify Captcha
-    console.log(`🔍 Checking captcha... ID: ${captchaId}, Input: ${captchaInput}`);
-    const captchas = req.app.locals.captchas || {};
-    const storedCaptcha = captchas[captchaId];
-    
-    if (!storedCaptcha) {
-      console.log('❌ Captcha EXPIRED or not found');
-      console.log('Available captchas:', Object.keys(captchas));
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Captcha expired. Please refresh the captcha and try again.' 
-      });
-    }
-    
-    if (storedCaptcha.toUpperCase() !== (captchaInput || '').toUpperCase()) {
-      console.log(`❌ Captcha MISMATCH. Expected: ${storedCaptcha}, Got: ${captchaInput}`);
-      // Delete the used captcha
-      delete captchas[captchaId];
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Invalid captcha. Please try again.' 
-      });
-    }
-
-    // Delete used captcha
-    delete captchas[captchaId];
-    console.log('✅ Captcha verified successfully');
+    // ✅ Step 2: Verify Captcha (Skipped)
+    console.log('ℹ️ Captcha verification skipped');
 
     // ✅ Step 3: Check Existing User
     console.log(`🔍 Checking if phone exists: ${phone}`);

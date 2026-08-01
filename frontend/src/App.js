@@ -345,7 +345,6 @@ const Register = () => {
   const [seconds, setSeconds] = useState(5);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [captcha, setCaptcha] = useState({ id: '', text: 'LOADING' });
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -355,8 +354,7 @@ const Register = () => {
     confirmPassword: '',
     inviteCode: new URLSearchParams(window.location.search).get('inviteCode') || '',
     securityQuestion: '',
-    securityAnswer: '',
-    captchaInput: ''
+    securityAnswer: ''
   });
 
   useEffect(() => {
@@ -370,21 +368,7 @@ const Register = () => {
     }
   }, [seconds]);
 
-  const loadCaptcha = async () => {
-    try {
-      console.log('Loading captcha...');
-      const res = await axios.get(`${API_URL}/auth/captcha`);
-      console.log('Captcha loaded:', res.data);
-      setCaptcha({ id: res.data.captchaId, text: res.data.captchaText });
-    } catch (err) {
-      console.error('Captcha error:', err);
-      setCaptcha({ id: 'error', text: 'ERROR' });
-    }
-  };
-
-  useEffect(() => {
-    loadCaptcha();
-  }, []);
+  // Captcha loading logic removed
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -400,13 +384,11 @@ const Register = () => {
     setLoading(true);
     setError('');
     const { confirmPassword, ...submitData } = formData;
-    const result = await register({ ...submitData, captchaId: captcha.id, captchaInput: formData.captchaInput });
+    const result = await register(submitData);
     if (result.success) {
       navigate('/dashboard');
     } else {
       setError(result.message);
-      loadCaptcha();
-      setFormData({ ...formData, captchaInput: '' });
     }
     setLoading(false);
   };
@@ -499,53 +481,7 @@ const Register = () => {
             <input type="text" name="securityAnswer" placeholder="Enter your answer" value={formData.securityAnswer} onChange={handleChange} required style={{ width: '100%', padding: '12px 15px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }} />
           </div>
 
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', color: '#374151', fontSize: '13px', marginBottom: '5px', fontWeight: 600 }}>Captcha</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%', boxSizing: 'border-box' }}>
-              <input 
-                type="text" 
-                name="captchaInput" 
-                placeholder="Enter captcha" 
-                value={formData.captchaInput} 
-                onChange={handleChange} 
-                required 
-                maxLength="5" 
-                style={{ 
-                  flex: 1, 
-                  minWidth: 0, 
-                  padding: '12px 12px', 
-                  border: '2px solid #e5e7eb', 
-                  borderRadius: '8px', 
-                  fontSize: '14px', 
-                  outline: 'none', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              <div 
-                onClick={loadCaptcha} 
-                style={{ 
-                  flexShrink: 0,
-                  background: '#f0fdf4', 
-                  color: '#047857', 
-                  padding: '12px 14px', 
-                  borderRadius: '8px', 
-                  fontWeight: 'bold', 
-                  fontSize: '16px', 
-                  letterSpacing: '2px', 
-                  fontStyle: 'italic', 
-                  cursor: 'pointer', 
-                  textDecoration: 'line-through', 
-                  border: '2px solid #d1fae5', 
-                  userSelect: 'none',
-                  minWidth: '95px',
-                  textAlign: 'center',
-                  boxSizing: 'border-box'
-                }}
-              >
-                {captcha.text}
-              </div>
-            </div>
-          </div>
+          {/* Captcha removed */}
 
           <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', marginTop: '10px', opacity: loading ? 0.7 : 1 }}>
             {loading ? 'Creating account...' : 'Join GrowMore'}
